@@ -2,7 +2,7 @@
  * File Name:   OthelloViewController.java
  * Author:      Tyson Moyes
  * Assignment:  Assignment 1 Part 1
- * Date:        June 22nd 2021
+ * Date:        June 24th 2021
  * Professor:   Daniel Cormier
  * Purpose:     OthelloViewController.java contains the OthelloViewController and Controller inner class.
  *              These contain all the UI element creation and action handling for the Othello game. 
@@ -18,14 +18,19 @@ import java.awt.event.*;
 
 /**
  * OthelloViewController contains all the code for creating the UI elements and
- * adding them to the program's Frame. It also has an inner class (Controller)
- * for handling the action events from the buttons and the checkbox.
+ * adding them to the program's Frame. It also has an inner class
+ * {@link Controller} for handling the action events from the buttons and the
+ * checkbox.
  * 
  * @author Tyson Moyes
- * @version 1.0
- * @since 1.8.0_291
+ * @version 1.1
+ * @since 1.8.0_29
  */
 public class OthelloViewController extends JFrame {
+    /****************************************************************************************
+     * VARIABLES
+     ***************************************************************************************/
+
     /** Text for the titlebar */
     private static final String FRAME_TITLE = "Tyson Moyes' Othello Client";
 
@@ -78,9 +83,15 @@ public class OthelloViewController extends JFrame {
     /** Right Arrow Icon */
     private ImageIcon rightIcon = new ImageIcon(getClass().getResource("/graphics/rightarrow.png"));
 
+    /****************************************************************************************
+     * METHODS
+     ***************************************************************************************/
+
     /**
-     * Default constructor. Calls the super constructor, sets necesary Frame
-     * variables and calls the createGUI method
+     * OthelloViewController constructor creates the View Controller
+     * <p>
+     * Calls the super constructor, sets necesary Frame variables and calls the
+     * {@link #createGUI} method
      */
     public OthelloViewController() {
         super(FRAME_TITLE);
@@ -96,6 +107,10 @@ public class OthelloViewController extends JFrame {
     /**
      * createGUI calls the methods to create each section of the UI, then adds them
      * to the pane.
+     * 
+     * @see #createBoard
+     * @see #createCommands
+     * @see #createChatInputArea
      */
     private void createGUI() {
         // Create an instance of the Controller inner class that we can pass to the
@@ -110,8 +125,11 @@ public class OthelloViewController extends JFrame {
     }
 
     /**
-     * createBoard uses a nested for loop and a series of checks for which
-     * row/column it is currently in to populate the UI elements for the board.
+     * createBoard creates all elements of the Board pane, which is on the left side
+     * of the UI.
+     * <p>
+     * Using a nested for loop, it traverses the 10x10 GridLayout and adds the
+     * necessary JLabel elements
      */
     private void createBoard() {
         for (int i = 0; i < 10; i++) {
@@ -125,7 +143,8 @@ public class OthelloViewController extends JFrame {
                     columnIndicator.setVerticalAlignment(JLabel.CENTER);
                     columnIndicator.setFont(columnIndicator.getFont().deriveFont(20f));
 
-                    // Check the current loop index. If not the first or last column in the row, the
+                    // Check the current column loop index. If not the first or last column in the
+                    // row, the
                     // square should have the column number printed to it
                     if (j != 0 && j != 9) {
                         columnIndicator.setText("" + j);
@@ -234,7 +253,7 @@ public class OthelloViewController extends JFrame {
      * createCommands creates all the elements on the right-hand side of the
      * program.
      * 
-     * @param c the Controller object created in createGUI
+     * @param c the Controller object created in {@link #createGUI}
      */
     private void createCommands(Controller c) {
         // Set the background for the whole area
@@ -343,7 +362,7 @@ public class OthelloViewController extends JFrame {
      * createChatInputArea creates the text field and submit button and adds them to
      * the chat Panel
      * 
-     * @param c The Controller object created in createGUI
+     * @param c The Controller object created in {@link #createGUI}
      */
     private void createChatInputArea(Controller c) {
         // Create a text field and add it to the left-side of the chat Panel
@@ -363,9 +382,13 @@ public class OthelloViewController extends JFrame {
         chatInputPanel.setBorder(BorderFactory.createMatteBorder(0, 5, 5, 5, Color.GRAY));
     }
 
+    /****************************************************************************************
+     * INNER CLASS
+     ***************************************************************************************/
+
     /**
      * Controller implements ActionListener and handles the action events from the
-     * buttons created by OthelloViewController.
+     * buttons created by {@link OthelloViewController}
      */
     private class Controller implements ActionListener {
         /**

@@ -2,7 +2,7 @@
  * File Name:   OthelloSplashScreen.java
  * Author:      Tyson Moyes
  * Assignment:  Assignment 1 Part 1
- * Date:        June 22nd 2021
+ * Date:        June 24th 2021
  * Professor:   Daniel Cormier
  * Purpose:     This file contains the OthelloSplashScreen class and all the code required to load the Splash Screen at the start of the program.
  */
@@ -17,7 +17,7 @@ import java.awt.*;
  * screen for the Othello program
  * 
  * @author Tyson Moyes (and Svillen Ranev and Daniel Cormier, from Lab 2 code)
- * @version 1.0
+ * @version 1.1
  * @since 1.8.0_291
  */
 public class OthelloSplashScreen extends JWindow {
@@ -25,7 +25,9 @@ public class OthelloSplashScreen extends JWindow {
     private final int duration;
 
     /**
-     * Default constructor. Set the duration of the splash screen
+     * Constructor for OthelloSplashScreen.
+     * <p>
+     * Set the duration of the splash screen
      * 
      * @param duration length of time splash screen is displayed.
      */
@@ -79,12 +81,11 @@ public class OthelloSplashScreen extends JWindow {
 
                 vc.setLocationRelativeTo(null);
 
-                // vc.pack();
                 vc.setVisible(true);
             }
         });
 
-        // destroy the window
+        // destroy the Splash Screen now that the program has loaded
         dispose();
     }
 }
