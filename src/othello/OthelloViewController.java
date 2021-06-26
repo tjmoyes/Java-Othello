@@ -2,7 +2,7 @@
  * File Name:   OthelloViewController.java
  * Author:      Tyson Moyes
  * Assignment:  Assignment 1 Part 1
- * Date:        June 24th 2021
+ * Date:        June 26th 2021
  * Professor:   Daniel Cormier
  * Purpose:     OthelloViewController.java contains the OthelloViewController and Controller inner class.
  *              These contain all the UI element creation and action handling for the Othello game. 
@@ -23,14 +23,15 @@ import java.awt.event.*;
  * checkbox.
  * 
  * @author Tyson Moyes
- * @version 1.1
+ * @version 1.2
  * @since 1.8.0_29
  */
 public class OthelloViewController extends JFrame {
     /****************************************************************************************
      * VARIABLES
      ***************************************************************************************/
-
+    /** Serial version UID generated from serialver */
+    private static final long serialVersionUID = 3646672638732074113L;
     /** Text for the titlebar */
     private static final String FRAME_TITLE = "Tyson Moyes' Othello Client";
 
@@ -38,50 +39,50 @@ public class OthelloViewController extends JFrame {
     /** 2-dimensional array for the board squares */
     private JLabel[][] squares = new JLabel[8][8];
     /** Dimension for the board squares */
-    private Dimension squareSize = new Dimension(60, 60);
+    private final Dimension squareSize = new Dimension(60, 60);
     /** Char array for the row indicators, used in createBoard() */
-    private char[] ROWS = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
+    private final char[] ROWS = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
 
     // Colors
     /** For the Grey BG Areas */
-    private Color greyBG = new Color(220, 220, 220);
+    private final Color greyBG = new Color(220, 220, 220);
     /** For the Blue BG Areas */
-    private Color blueBG = new Color(175, 175, 255);
+    private final Color blueBG = new Color(175, 175, 255);
     /** White tiles */
-    private Color whiteTile = Color.WHITE;
+    private final Color whiteTile = Color.WHITE;
     /** Black tiles */
-    private Color blackTile = Color.BLACK;
+    private final Color blackTile = Color.BLACK;
 
     // Buttons
     private JButton up, down, left, right, move, submit;
     /** Dimension for the command buttons (up, down, left, right, move) */
-    private Dimension commandBtnSize = new Dimension(40, 40);
+    private final Dimension commandBtnSize = new Dimension(40, 40);
     // Checkbox
-    private JCheckBox showValidMoves = new JCheckBox("Show Valid Moves");
+    private final JCheckBox showValidMoves = new JCheckBox("Show Valid Moves");
 
     // UI panels
     /** Main UI Pane to which all UI elements will be appended */
-    private JPanel pane = new JPanel(new BorderLayout());
+    private final JPanel pane = new JPanel(new BorderLayout());
     /** Board UI pane */
-    private JPanel board = new JPanel(new GridLayout(10, 10));
+    private final JPanel board = new JPanel(new GridLayout(10, 10));
     /** commands UI Pane */
-    private JPanel commands = new JPanel(new BorderLayout());
+    private final JPanel commands = new JPanel(new BorderLayout());
     /** Chat input Pane */
-    private JPanel chatInputPanel = new JPanel(new BorderLayout());
+    private final JPanel chatInputPanel = new JPanel(new BorderLayout());
 
     // Icons
     /** Player 1 Icon */
-    private ImageIcon player1Icon = new ImageIcon(getClass().getResource("/graphics/white.png"));
+    private final ImageIcon player1Icon = new ImageIcon(getClass().getResource("/graphics/white.png"));
     /** Player 2 Icon */
-    private ImageIcon player2Icon = new ImageIcon(getClass().getResource("/graphics/black.png"));
+    private final ImageIcon player2Icon = new ImageIcon(getClass().getResource("/graphics/black.png"));
     /** Up Arrow Icon */
-    private ImageIcon upIcon = new ImageIcon(getClass().getResource("/graphics/uparrow.png"));
+    private final ImageIcon upIcon = new ImageIcon(getClass().getResource("/graphics/uparrow.png"));
     /** Down Arrow Icon */
-    private ImageIcon downIcon = new ImageIcon(getClass().getResource("/graphics/downarrow.png"));
+    private final ImageIcon downIcon = new ImageIcon(getClass().getResource("/graphics/downarrow.png"));
     /** Left Arrow Icon */
-    private ImageIcon leftIcon = new ImageIcon(getClass().getResource("/graphics/leftarrow.png"));
+    private final ImageIcon leftIcon = new ImageIcon(getClass().getResource("/graphics/leftarrow.png"));
     /** Right Arrow Icon */
-    private ImageIcon rightIcon = new ImageIcon(getClass().getResource("/graphics/rightarrow.png"));
+    private final ImageIcon rightIcon = new ImageIcon(getClass().getResource("/graphics/rightarrow.png"));
 
     /****************************************************************************************
      * METHODS
@@ -90,13 +91,11 @@ public class OthelloViewController extends JFrame {
     /**
      * OthelloViewController constructor creates the View Controller
      * <p>
-     * Calls the super constructor, sets necesary Frame variables and calls the
-     * {@link #createGUI} method
+     * Calls the super constructor, calls the {@link #createGUI} method and adds to
+     * the frame
      */
     public OthelloViewController() {
         super(FRAME_TITLE);
-        super.setResizable(false);
-        super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         createGUI();
 
         super.add(pane);
