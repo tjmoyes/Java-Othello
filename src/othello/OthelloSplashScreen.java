@@ -38,8 +38,7 @@ public class OthelloSplashScreen extends JWindow {
     }
 
     /**
-     * showSplashWindow creates and displays the splash screen, then uses
-     * invokeLater to launch the View Controller
+     * showSplashWindow creates and displays the splash screen
      */
     public void showSplashWindow() {
         JPanel content = new JPanel(new BorderLayout());

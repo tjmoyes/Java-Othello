@@ -366,6 +366,11 @@ public class OthelloViewController extends JFrame {
     private void createChatInputArea(Controller c) {
         // Create a text field and add it to the left-side of the chat Panel
         JTextField textField = new JTextField();
+        textField.setBackground(Color.WHITE);
+        // I'm not sure exactly what I'm missing here, but the text field isn't editable
+        // for me
+        textField.setEditable(true);
+        textField.setHorizontalAlignment(JTextField.LEFT);
         chatInputPanel.add(textField, BorderLayout.WEST);
 
         // Create a submit button with black background and red text and add it to the
