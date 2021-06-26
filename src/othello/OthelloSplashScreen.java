@@ -71,20 +71,6 @@ public class OthelloSplashScreen extends JWindow {
             e.printStackTrace();
         }
 
-        // Run the OVC
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                OthelloViewController vc = new OthelloViewController();
-                vc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                vc.setResizable(false);
-
-                vc.setLocationRelativeTo(null);
-
-                vc.setVisible(true);
-            }
-        });
-
         // destroy the Splash Screen now that the program has loaded
         dispose();
     }

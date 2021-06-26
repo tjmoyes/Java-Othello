@@ -9,6 +9,9 @@
 
 package othello;
 
+import javax.swing.*;
+import java.awt.*;
+
 /**
  * Othello is the driver class for the program.
  * 
@@ -29,5 +32,19 @@ public class Othello {
 
         OthelloSplashScreen splash = new OthelloSplashScreen(duration);
         splash.showSplashWindow();
+
+        // Run the OVC
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                OthelloViewController vc = new OthelloViewController();
+                vc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                vc.setResizable(false);
+
+                vc.setLocationRelativeTo(null);
+
+                vc.setVisible(true);
+            }
+        });
     }
 }
