@@ -274,30 +274,35 @@ public class OthelloViewController extends JFrame {
         movementArea.setBackground(greyBG);
 
         up = new JButton();
+        up.setBackground(Color.WHITE);
         up.setPreferredSize(commandBtnSize);
         up.setIcon(upIcon);
         up.addActionListener(c);
         up.setActionCommand("up");
 
         down = new JButton();
+        down.setBackground(Color.WHITE);
         down.setPreferredSize(commandBtnSize);
         down.setIcon(downIcon);
         down.addActionListener(c);
         down.setActionCommand("down");
 
         left = new JButton();
+        left.setBackground(Color.WHITE);
         left.setPreferredSize(commandBtnSize);
         left.setIcon(leftIcon);
         left.addActionListener(c);
         left.setActionCommand("left");
 
         right = new JButton();
+        right.setBackground(Color.WHITE);
         right.setPreferredSize(commandBtnSize);
         right.setIcon(rightIcon);
         right.addActionListener(c);
         right.setActionCommand("right");
 
         move = new JButton("move");
+        move.setBackground(Color.WHITE);
         move.setFont(move.getFont().deriveFont(10f));
         move.setMargin(new Insets(0, 0, 0, 0));
         move.setPreferredSize(commandBtnSize);
