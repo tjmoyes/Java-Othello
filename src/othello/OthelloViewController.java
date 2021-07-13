@@ -72,9 +72,9 @@ public class OthelloViewController extends JFrame {
 
     // Icons
     /** Player 1 Icon */
-    private final ImageIcon player1Icon = new ImageIcon(getClass().getResource("/graphics/white.png"));
+    private final ImageIcon player1Icon = new ImageIcon(getClass().getResource("/graphics/black.png"));
     /** Player 2 Icon */
-    private final ImageIcon player2Icon = new ImageIcon(getClass().getResource("/graphics/black.png"));
+    private final ImageIcon player2Icon = new ImageIcon(getClass().getResource("/graphics/white.png"));
     /** Up Arrow Icon */
     private final ImageIcon upIcon = new ImageIcon(getClass().getResource("/graphics/uparrow.png"));
     /** Down Arrow Icon */
@@ -236,13 +236,13 @@ public class OthelloViewController extends JFrame {
             }
         }
 
-        // We need to add the starting tokens. White has 2 tokens at index [3,3] (D4)
-        // and [4,4] (E5). Black has 2 tokens at index [3,4] (D5) and [4,3] (E4)
-        squares[3][3].setIcon(player1Icon);
-        squares[4][4].setIcon(player1Icon);
+        // We need to add the starting tokens. Black has 2 tokens at index [3,4] (D5)
+        // and [4,3] (E4). Black has 2 tokens at index [3,3] (D4) and [4,4] (E5)
+        squares[3][4].setIcon(player1Icon);
+        squares[4][3].setIcon(player1Icon);
 
-        squares[3][4].setIcon(player2Icon);
-        squares[4][3].setIcon(player2Icon);
+        squares[3][3].setIcon(player2Icon);
+        squares[4][4].setIcon(player2Icon);
 
         // Finally, add the thick border
         board.setBorder(BorderFactory.createLineBorder(Color.GRAY, 5));
