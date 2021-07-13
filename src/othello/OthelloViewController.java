@@ -350,9 +350,10 @@ public class OthelloViewController extends JFrame {
         chatOutputArea.setBackground(blueBG);
         chatOutputArea.setBorder(BorderFactory.createMatteBorder(5, 0, 5, 0, Color.GRAY));
 
-        JLabel chatOutput = new JLabel();
+        JTextArea chatOutput = new JTextArea();
         chatOutput.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        chatOutput.setText("<html>Player 1 initialized with 2 pieces. <br/>Player 2 initialized with 2 pieces.</html>");
+        // TODO: Will need to update this with proper piece initialized count
+        chatOutput.setText("Player 1 initialized with 2 pieces\nPlayer 2 initialized with 2 pieces");
         chatOutput.setOpaque(false);
         chatOutputArea.add(chatOutput, BorderLayout.CENTER);
 
