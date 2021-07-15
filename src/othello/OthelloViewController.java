@@ -94,11 +94,33 @@ public class OthelloViewController extends JFrame {
     /** Help Menu */
     private final JMenu help = new JMenu("Help");
 
-    // FILE MENU ITEMS
+    // File Menu Items
     private JMenuItem newGame = new JMenuItem("New Game");
     private JMenuItem loadGame = new JMenuItem("Load");
     private JMenuItem saveGame = new JMenuItem("Save");
     private JMenuItem exit = new JMenuItem("Exit");
+
+    // Game Menu Items
+    private JMenu boardColours = new JMenu("Board Colours");
+    private JMenu debugScenarios = new JMenu("Debug Scenarios");
+
+    // Board colours RadioMenuItems
+    private JRadioButtonMenuItem normalColours = new JRadioButtonMenuItem("Normal Colours");
+    private JRadioButtonMenuItem canadianColours = new JRadioButtonMenuItem("Canadian Colours");
+    private JRadioButtonMenuItem customColours = new JRadioButtonMenuItem("Custom Colours");
+
+    // Debug Scenarios RadioMenuItems
+    private JRadioButtonMenuItem normalGame = new JRadioButtonMenuItem("Normal Game");
+    private JRadioButtonMenuItem cornerTest = new JRadioButtonMenuItem("Corner Test");
+    private JRadioButtonMenuItem sideTests = new JRadioButtonMenuItem("Side Tests");
+    private JRadioButtonMenuItem oneXCaptureTest = new JRadioButtonMenuItem("1x Capture Test");
+    private JRadioButtonMenuItem twoXCaptureTest = new JRadioButtonMenuItem("2x Capture Test");
+    private JRadioButtonMenuItem emptyBoard = new JRadioButtonMenuItem("Empty Board");
+    private JRadioButtonMenuItem innerSquareTest = new JRadioButtonMenuItem("Inner Square Test");
+    private JRadioButtonMenuItem upArrowOrientationTest = new JRadioButtonMenuItem("Up Arrow Orientation Test");
+
+    // Help Menu Item
+    private JMenuItem about = new JMenuItem("About");
 
     /****************************************************************************************
      * METHODS
@@ -131,7 +153,7 @@ public class OthelloViewController extends JFrame {
         // Create an instance of the Controller inner class that we can pass to the
         // createCommands and createChatInputArea methods for action handling
         Controller c = new Controller();
-        createMenu();
+        createMenu(c);
         createBoard();
         createCommands(c);
         createChatInputArea(c);
@@ -140,16 +162,93 @@ public class OthelloViewController extends JFrame {
         pane.add(chatInputPanel, BorderLayout.SOUTH);
     }
 
-    private void createMenu() {
+    private void createMenu(Controller c) {
         menuBar.add(file);
         menuBar.add(game);
         menuBar.add(help);
 
-        // Add the FILE menu items
+        // Add the action listeners
+        newGame.addActionListener(c);
+        exit.addActionListener(c);
+        about.addActionListener(c);
+        normalColours.addActionListener(c);
+        canadianColours.addActionListener(c);
+        customColours.addActionListener(c);
+        normalGame.addActionListener(c);
+        cornerTest.addActionListener(c);
+        sideTests.addActionListener(c);
+        oneXCaptureTest.addActionListener(c);
+        twoXCaptureTest.addActionListener(c);
+        emptyBoard.addActionListener(c);
+        innerSquareTest.addActionListener(c);
+        upArrowOrientationTest.addActionListener(c);
+
+        // Set the action commands
+        newGame.setActionCommand("New Game");
+        exit.setActionCommand("Exit");
+        about.setActionCommand("About");
+        normalColours.setActionCommand("Normal Colours");
+        canadianColours.setActionCommand("Canadian Colours");
+        customColours.setActionCommand("Custom Colours");
+        normalGame.setActionCommand("Normal Game");
+        cornerTest.setActionCommand("Corner Test");
+        sideTests.setActionCommand("Side Tests");
+        oneXCaptureTest.setActionCommand("1x Capture Test");
+        twoXCaptureTest.setActionCommand("2x Capture Test");
+        emptyBoard.setActionCommand("Empty Board");
+        innerSquareTest.setActionCommand("Inner Square Test");
+        upArrowOrientationTest.setActionCommand("Up Arrow Orientation Test");
+
+        // Add to the file menu
         file.add(newGame);
+        loadGame.setEnabled(false);
+        saveGame.setEnabled(false);
         file.add(loadGame);
         file.add(saveGame);
         file.add(exit);
+
+        // Submenu for Board Colours
+        // Create ButtonGroup and add items to the group
+        ButtonGroup colourGroup = new ButtonGroup();
+        normalColours.setSelected(true);
+        colourGroup.add(normalColours);
+        colourGroup.add(canadianColours);
+        colourGroup.add(customColours);
+
+        // Add all the items to the board colours submenu
+        boardColours.add(normalColours);
+        boardColours.add(canadianColours);
+        boardColours.add(customColours);
+
+        // Submenu for Debug Scenarios
+        // Create ButtonGroup and add items to the group
+        ButtonGroup debugGroup = new ButtonGroup();
+        normalGame.setSelected(true);
+        debugGroup.add(normalGame);
+        debugGroup.add(cornerTest);
+        debugGroup.add(sideTests);
+        debugGroup.add(oneXCaptureTest);
+        debugGroup.add(twoXCaptureTest);
+        debugGroup.add(emptyBoard);
+        debugGroup.add(innerSquareTest);
+        debugGroup.add(upArrowOrientationTest);
+
+        // Add all the items to the debug scenarios submenu
+        debugScenarios.add(normalGame);
+        debugScenarios.add(cornerTest);
+        debugScenarios.add(sideTests);
+        debugScenarios.add(oneXCaptureTest);
+        debugScenarios.add(twoXCaptureTest);
+        debugScenarios.add(emptyBoard);
+        debugScenarios.add(innerSquareTest);
+        debugScenarios.add(upArrowOrientationTest);
+
+        // Add the GAME menu items
+        game.add(boardColours);
+        game.add(debugScenarios);
+
+        // Add the HELP menu item
+        help.add(about);
 
         // Set the JFrame's menu bar
         super.setJMenuBar(menuBar);
