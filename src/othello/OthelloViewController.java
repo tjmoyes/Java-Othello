@@ -84,6 +84,22 @@ public class OthelloViewController extends JFrame {
     /** Right Arrow Icon */
     private final ImageIcon rightIcon = new ImageIcon(getClass().getResource("/graphics/rightarrow.png"));
 
+    // Menus
+    /** The Menu Bar */
+    private final JMenuBar menuBar = new JMenuBar();
+    /** File Menu */
+    private final JMenu file = new JMenu("File");
+    /** Game Menu */
+    private final JMenu game = new JMenu("Game");
+    /** Help Menu */
+    private final JMenu help = new JMenu("Help");
+
+    // FILE MENU ITEMS
+    private JMenuItem newGame = new JMenuItem("New Game");
+    private JMenuItem loadGame = new JMenuItem("Load");
+    private JMenuItem saveGame = new JMenuItem("Save");
+    private JMenuItem exit = new JMenuItem("Exit");
+
     /****************************************************************************************
      * METHODS
      ***************************************************************************************/
@@ -115,12 +131,28 @@ public class OthelloViewController extends JFrame {
         // Create an instance of the Controller inner class that we can pass to the
         // createCommands and createChatInputArea methods for action handling
         Controller c = new Controller();
+        createMenu();
         createBoard();
         createCommands(c);
         createChatInputArea(c);
         pane.add(board, BorderLayout.WEST);
         pane.add(commands, BorderLayout.EAST);
         pane.add(chatInputPanel, BorderLayout.SOUTH);
+    }
+
+    private void createMenu() {
+        menuBar.add(file);
+        menuBar.add(game);
+        menuBar.add(help);
+
+        // Add the FILE menu items
+        file.add(newGame);
+        file.add(loadGame);
+        file.add(saveGame);
+        file.add(exit);
+
+        // Set the JFrame's menu bar
+        super.setJMenuBar(menuBar);
     }
 
     /**
