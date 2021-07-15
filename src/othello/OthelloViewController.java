@@ -48,10 +48,10 @@ public class OthelloViewController extends JFrame {
     private final Color greyBG = new Color(220, 220, 220);
     /** For the Blue BG Areas */
     private final Color blueBG = new Color(175, 175, 255);
-    /** White tiles */
-    private final Color whiteTile = Color.WHITE;
-    /** Black tiles */
-    private final Color blackTile = Color.BLACK;
+    /** A tiles, default white */
+    private Color tileA = Color.WHITE;
+    /** B tiles, default black */
+    private Color tileB = Color.BLACK;
 
     // Buttons
     private JButton up, down, left, right, move, submit;
@@ -109,6 +109,9 @@ public class OthelloViewController extends JFrame {
     private JRadioButtonMenuItem canadianColours = new JRadioButtonMenuItem("Canadian Colours");
     private JRadioButtonMenuItem customColours = new JRadioButtonMenuItem("Custom Colours");
 
+    /** Board Colours ButtonGroup */
+    private ButtonGroup colourGroup = new ButtonGroup();
+
     // Debug Scenarios RadioMenuItems
     private JRadioButtonMenuItem normalGame = new JRadioButtonMenuItem("Normal Game");
     private JRadioButtonMenuItem cornerTest = new JRadioButtonMenuItem("Corner Test");
@@ -118,6 +121,9 @@ public class OthelloViewController extends JFrame {
     private JRadioButtonMenuItem emptyBoard = new JRadioButtonMenuItem("Empty Board");
     private JRadioButtonMenuItem innerSquareTest = new JRadioButtonMenuItem("Inner Square Test");
     private JRadioButtonMenuItem upArrowOrientationTest = new JRadioButtonMenuItem("Up Arrow Orientation Test");
+
+    /** Debug Scenarios ButtonGroup */
+    private ButtonGroup debugGroup = new ButtonGroup();
 
     // Help Menu Item
     private JMenuItem about = new JMenuItem("About");
@@ -154,7 +160,7 @@ public class OthelloViewController extends JFrame {
         // createCommands and createChatInputArea methods for action handling
         Controller c = new Controller();
         createMenu(c);
-        createBoard();
+        createBoard(c);
         createCommands(c);
         createChatInputArea(c);
         pane.add(board, BorderLayout.WEST);
@@ -162,6 +168,11 @@ public class OthelloViewController extends JFrame {
         pane.add(chatInputPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * createMenu creates and adds all elements required for the menu bar
+     * 
+     * @param c Controller object for action listening
+     */
     private void createMenu(Controller c) {
         menuBar.add(file);
         menuBar.add(game);
@@ -190,14 +201,14 @@ public class OthelloViewController extends JFrame {
         normalColours.setActionCommand("Normal Colours");
         canadianColours.setActionCommand("Canadian Colours");
         customColours.setActionCommand("Custom Colours");
-        normalGame.setActionCommand("Normal Game");
-        cornerTest.setActionCommand("Corner Test");
-        sideTests.setActionCommand("Side Tests");
-        oneXCaptureTest.setActionCommand("1x Capture Test");
-        twoXCaptureTest.setActionCommand("2x Capture Test");
-        emptyBoard.setActionCommand("Empty Board");
-        innerSquareTest.setActionCommand("Inner Square Test");
-        upArrowOrientationTest.setActionCommand("Up Arrow Orientation Test");
+        normalGame.setActionCommand("0");
+        cornerTest.setActionCommand("1");
+        sideTests.setActionCommand("2");
+        oneXCaptureTest.setActionCommand("3");
+        twoXCaptureTest.setActionCommand("4");
+        emptyBoard.setActionCommand("5");
+        innerSquareTest.setActionCommand("6");
+        upArrowOrientationTest.setActionCommand("7");
 
         // Add to the file menu
         file.add(newGame);
@@ -209,7 +220,6 @@ public class OthelloViewController extends JFrame {
 
         // Submenu for Board Colours
         // Create ButtonGroup and add items to the group
-        ButtonGroup colourGroup = new ButtonGroup();
         normalColours.setSelected(true);
         colourGroup.add(normalColours);
         colourGroup.add(canadianColours);
@@ -222,7 +232,6 @@ public class OthelloViewController extends JFrame {
 
         // Submenu for Debug Scenarios
         // Create ButtonGroup and add items to the group
-        ButtonGroup debugGroup = new ButtonGroup();
         normalGame.setSelected(true);
         debugGroup.add(normalGame);
         debugGroup.add(cornerTest);
@@ -261,7 +270,7 @@ public class OthelloViewController extends JFrame {
      * Using a nested for loop, it traverses the 10x10 GridLayout and adds the
      * necessary JLabel elements
      */
-    private void createBoard() {
+    private void createBoard(Controller c) {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 // Header or footer row? Should have grey BG
@@ -356,9 +365,9 @@ public class OthelloViewController extends JFrame {
 
                         // Alternating the square colors
                         if ((i - 1 + j - 1) % 2 == 0) {
-                            squares[i - 1][j - 1].setBackground(whiteTile);
+                            squares[i - 1][j - 1].setBackground(tileA);
                         } else {
-                            squares[i - 1][j - 1].setBackground(blackTile);
+                            squares[i - 1][j - 1].setBackground(tileB);
                         }
                         // Add the square to the board
                         board.add(squares[i - 1][j - 1]);
@@ -367,13 +376,16 @@ public class OthelloViewController extends JFrame {
             }
         }
 
+        // Add Starting Tokens with the controller.
+        c.addTokens();
+
         // We need to add the starting tokens. Black has 2 tokens at index [3,4] (D5)
         // and [4,3] (E4). Black has 2 tokens at index [3,3] (D4) and [4,4] (E5)
-        squares[3][4].setIcon(player1Icon);
-        squares[4][3].setIcon(player1Icon);
+        // squares[3][4].setIcon(player1Icon);
+        // squares[4][3].setIcon(player1Icon);
 
-        squares[3][3].setIcon(player2Icon);
-        squares[4][4].setIcon(player2Icon);
+        // squares[3][3].setIcon(player2Icon);
+        // squares[4][4].setIcon(player2Icon);
 
         // Finally, add the thick border
         board.setBorder(BorderFactory.createLineBorder(Color.GRAY, 5));
@@ -462,7 +474,7 @@ public class OthelloViewController extends JFrame {
         player1Text.setText("Player 1 Pieces: ");
         playerInfoArea.add(player1Text);
         // This is the actual icon and token count.
-        JLabel player1Info = new JLabel("2", player1Icon, JLabel.CENTER);
+        JLabel player1Info = new JLabel(Integer.toString(c.getPlayerChipCount(2)), player1Icon, JLabel.CENTER);
         playerInfoArea.add(player1Info);
 
         JLabel player2Text = new JLabel();
@@ -470,7 +482,7 @@ public class OthelloViewController extends JFrame {
         player2Text.setText("Player 2 Pieces: ");
         playerInfoArea.add(player2Text);
         // Icon and token count label
-        JLabel player2Info = new JLabel("2", player2Icon, JLabel.CENTER);
+        JLabel player2Info = new JLabel(Integer.toString(c.getPlayerChipCount(2)), player2Icon, JLabel.CENTER);
         playerInfoArea.add(player2Info);
 
         northSection.add(playerInfoArea, BorderLayout.EAST);
@@ -484,7 +496,8 @@ public class OthelloViewController extends JFrame {
         JTextArea chatOutput = new JTextArea();
         chatOutput.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         // TODO: Will need to update this with proper piece initialized count
-        chatOutput.setText("Player 1 initialized with 2 pieces\nPlayer 2 initialized with 2 pieces");
+        chatOutput.setText("Player 1 initialized with " + c.getPlayerChipCount(1)
+                + " pieces\nPlayer 2 initialized with " + c.getPlayerChipCount(2) + " pieces");
         chatOutput.setOpaque(false);
         chatOutput.setWrapStyleWord(true);
         chatOutput.setEditable(false);
@@ -534,6 +547,12 @@ public class OthelloViewController extends JFrame {
      * buttons created by {@link OthelloViewController}
      */
     private class Controller implements ActionListener {
+        private OthelloModel model = new OthelloModel();
+
+        public Controller() {
+            model.prepareBoard(0);
+        }
+
         /**
          * When a button or checkbox is acted upon, this method is called.
          * 
@@ -542,7 +561,72 @@ public class OthelloViewController extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             String btnPressed = e.getActionCommand();
-            System.out.println(btnPressed);
+            switch (btnPressed) {
+            case "New Game":
+                int selectedScenario = Integer.parseInt(debugGroup.getSelection().getActionCommand());
+                newGame(selectedScenario);
+                break;
+            case "Normal Colours":
+            case "Canadian Colours":
+            case "Custom Colours":
+                changeColours(btnPressed);
+                break;
+            }
+
+        }
+
+        private void newGame(int mode) {
+            System.out.println("New Game, Mode = " + mode);
+            model.prepareBoard(mode);
+
+            addTokens();
+        }
+
+        private void changeColours(String colourChoice) {
+            if (colourChoice == "Normal Colours") {
+                tileA = Color.WHITE;
+                tileB = Color.BLACK;
+            } else if (colourChoice == "Canadian Colours") {
+                tileA = Color.RED;
+                tileB = Color.WHITE;
+            } else {
+                // TODO: Colour wheel prompt?
+            }
+
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if ((i + j) % 2 == 0)
+                        squares[i][j].setBackground(tileA);
+                    else
+                        squares[i][j].setBackground(tileB);
+                }
+            }
+        }
+
+        /**
+         * Adds the tokens to the board based on the values from OthelloModel's
+         * getSquare method
+         */
+        private void addTokens() {
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if (model.getSquare(i, j) == 1)
+                        squares[i][j].setIcon(player1Icon);
+                    else if (model.getSquare(i, j) == 2)
+                        squares[i][j].setIcon(player2Icon);
+                    else {
+                        squares[i][j].setIcon(null);
+                    }
+                }
+            }
+        }
+
+        private int getPlayerChipCount(int playerNum) {
+            if (playerNum == 1) {
+                return model.getPlayer1ChipCount();
+            } else {
+                return model.getPlayer2ChipCount();
+            }
         }
     }
 }
