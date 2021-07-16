@@ -26,6 +26,24 @@ public class OthelloModel {
     /** Player 2 Chip Count */
     private int player2ChipCount = 0;
 
+    // Some class constants for your use:
+    public static final int NORMAL = 0;
+    public static final int CORNER_TEST = 1;
+    public static final int OUTER_TEST = 2;
+    public static final int TEST_CAPTURE = 3;
+    public static final int TEST_CAPTURE2 = 4;
+    public static final int UNWINNABLE = 5;
+    public static final int INNER_TEST = 6;
+    public static final int ARROW = 7;
+
+    public static final int EMPTY = 0;
+    public static final int BLACK = 1;
+    public static final int WHITE = 2;
+
+    public OthelloModel() {
+        prepareBoard(NORMAL);
+    }
+
     /**
      * Returns the contents of a given square
      * 
@@ -47,8 +65,7 @@ public class OthelloModel {
         // I had to add this formatter off section or VSCode would turn my 2D array into
         // absolute disgusting filth
         // @formatter:off
-            // NORMAL GAME
-            case 0:
+            case NORMAL:
                 board = new int[][] 
                 {
                     {0, 0, 0, 0, 0, 0, 0, 0},
@@ -63,7 +80,7 @@ public class OthelloModel {
                 break;
 
             // CORNER TEST
-            case 1:
+            case CORNER_TEST:
                 board = new int[][] 
                 {
                     {2, 0, 0, 0, 0, 0, 0, 1},
@@ -78,7 +95,7 @@ public class OthelloModel {
                 break;
 
             // SIDE TESTS
-            case 2:
+            case OUTER_TEST:
                 board = new int[][]
                 {
                     {0, 0, 0, 0, 0, 0, 0, 0},
@@ -93,7 +110,7 @@ public class OthelloModel {
                 break;
             
             // 1x CAPTURE TEST
-            case 3:
+            case TEST_CAPTURE:
                 board = new int[][]
                 {
                     {0, 0, 0, 0, 0, 0, 0, 0},
@@ -108,7 +125,7 @@ public class OthelloModel {
                 break;
             
             // 2x CAPTURE TEST
-            case 4:
+            case TEST_CAPTURE2:
                 board = new int[][]
                 {
                     {1, 1, 1, 1, 1, 1, 1, 1},
@@ -123,7 +140,7 @@ public class OthelloModel {
                 break;
             
             // Empty Board
-            case 5:
+            case UNWINNABLE:
                 board = new int[][]
                 {
                     {0, 0, 0, 0, 0, 0, 0, 0},
@@ -138,7 +155,7 @@ public class OthelloModel {
                 break;
 
             // Inner Square Test
-            case 6:
+            case INNER_TEST:
                 board = new int[][]
                 {
                     {2, 2, 2, 2, 2, 2, 2, 2},
@@ -152,7 +169,7 @@ public class OthelloModel {
                 };
                 break;
             // Up arrow Test
-            case 7:
+            case ARROW:
                 board = new int[][]
                 {
                     {0, 0, 0, 1, 1, 0, 0, 0},
@@ -193,9 +210,9 @@ public class OthelloModel {
      * @return true if move is valid, false if not
      */
     public boolean canMove(int row, int col, int player) {
-        if(player == 1 && board[row][col] == 0 && board[row][col] != 1)
+        if (player == 1 && board[row][col] == 0 && board[row][col] != 1)
             return true;
-        else if(player == 2 && board[row][col] == 0 && board[row][col] != 2)
+        else if (player == 2 && board[row][col] == 0 && board[row][col] != 2)
             return true;
         return false;
     }

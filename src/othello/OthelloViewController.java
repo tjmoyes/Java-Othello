@@ -319,6 +319,8 @@ public class OthelloViewController extends JFrame {
                         rowIndicator.setFont(rowIndicator.getFont().deriveFont(20f));
                         rowIndicator.setText("" + ROWS[i - 1]);
 
+                        // If it's the first or last row, should add the external 1px border for the
+                        // board.
                         if (j == 0)
                             rowIndicator.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY));
                         else if (j == 9)
@@ -513,14 +515,6 @@ public class OthelloViewController extends JFrame {
      */
     private class Controller implements ActionListener {
         private OthelloModel model = new OthelloModel();
-
-        /**
-         * Constructor for the controller. Calls the prepareBoard method in OthelloModel
-         * with default mode 0
-         */
-        public Controller() {
-            model.prepareBoard(0);
-        }
 
         /**
          * When a button or checkbox is acted upon, this method is called.
