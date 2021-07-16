@@ -84,6 +84,8 @@ public class OthelloViewController extends JFrame {
     /** Right Arrow Icon */
     private final ImageIcon rightIcon = new ImageIcon(getClass().getResource("/graphics/rightarrow.png"));
 
+    private JTextField chatBarField = new JTextField();
+
     // Menus
     /** The Menu Bar */
     private final JMenuBar menuBar = new JMenuBar();
@@ -287,6 +289,12 @@ public class OthelloViewController extends JFrame {
                     columnIndicator.setHorizontalAlignment(JLabel.CENTER);
                     columnIndicator.setVerticalAlignment(JLabel.CENTER);
                     columnIndicator.setFont(columnIndicator.getFont().deriveFont(20f));
+                    // Top row needs a 1px border
+                    if (i == 0 && (j != 0 && j != 9)) {
+                        columnIndicator.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY));
+                    } else if (i == 9 && (j != 0 && j != 9)) {
+                        columnIndicator.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY));
+                    }
 
                     // Check the current column loop index. If not the first or last column in the
                     // row, the
@@ -310,6 +318,11 @@ public class OthelloViewController extends JFrame {
                         rowIndicator.setVerticalAlignment(JLabel.CENTER);
                         rowIndicator.setFont(rowIndicator.getFont().deriveFont(20f));
                         rowIndicator.setText("" + ROWS[i - 1]);
+
+                        if (j == 0)
+                            rowIndicator.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY));
+                        else if (j == 9)
+                            rowIndicator.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
                         board.add(rowIndicator);
                     }
 
@@ -324,50 +337,6 @@ public class OthelloViewController extends JFrame {
                         squares[i - 1][j - 1].setPreferredSize(squareSize);
                         squares[i - 1][j - 1].setHorizontalAlignment(JLabel.CENTER);
                         squares[i - 1][j - 1].setVerticalAlignment(JLabel.CENTER);
-
-                        // Border logic
-                        if (i - 1 == 0) {
-                            // Header row
-                            if (j - 1 == 0) {
-                                // Header row, first column. Border should be on left & top
-                                squares[i - 1][j - 1]
-                                        .setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, Color.GRAY));
-                            } else if (j - 1 == 7) {
-                                // Header row, last column. Border should be on right & top
-                                squares[i - 1][j - 1]
-                                        .setBorder(BorderFactory.createMatteBorder(1, 0, 0, 1, Color.GRAY));
-                            } else {
-                                // Header row, middle columns. Border should only be on top
-                                squares[i - 1][j - 1]
-                                        .setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY));
-                            }
-                        } else if (i - 1 == 7) {
-                            // Footer Row
-                            if (j - 1 == 0) {
-                                // Footer row, first column. Border should be on left & bottom
-                                squares[i - 1][j - 1]
-                                        .setBorder(BorderFactory.createMatteBorder(0, 1, 1, 0, Color.GRAY));
-                            } else if (j - 1 == 7) {
-                                // Footer row, last column. Border should be on right & bottom
-                                squares[i - 1][j - 1]
-                                        .setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, Color.GRAY));
-                            } else {
-                                // Footer row, middle columns. Border should only be on bottom
-                                squares[i - 1][j - 1]
-                                        .setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY));
-                            }
-                        } else {
-                            // Middle rows
-                            if (j - 1 == 0) {
-                                // Middle rows, left column. Border should only be on the left
-                                squares[i - 1][j - 1]
-                                        .setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
-                            } else if (j - 1 == 7) {
-                                // Middle rows, right column. Border should only be on the right.
-                                squares[i - 1][j - 1]
-                                        .setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY));
-                            } // Middle row middle columns have no border
-                        }
 
                         // Alternating the square colors
                         if ((i - 1 + j - 1) % 2 == 0) {
@@ -516,14 +485,10 @@ public class OthelloViewController extends JFrame {
      * @param c The Controller object created in {@link #createGUI}
      */
     private void createChatInputArea(Controller c) {
-        // Create a text field and add it to the left-side of the chat Panel
-        JTextField textField = new JTextField();
-        textField.setBackground(Color.WHITE);
-        // I'm not sure exactly what I'm missing here, but the text field isn't editable
-        // for me
-        textField.setEditable(true);
-        textField.setHorizontalAlignment(JTextField.LEFT);
-        chatInputPanel.add(textField, BorderLayout.WEST);
+        chatBarField.setBackground(Color.WHITE);
+        chatBarField.setEditable(true);
+        chatBarField.setHorizontalAlignment(JTextField.LEFT);
+        chatInputPanel.add(chatBarField, BorderLayout.WEST);
 
         // Create a submit button with black background and red text and add it to the
         // right-side of the chat Panel
@@ -549,6 +514,10 @@ public class OthelloViewController extends JFrame {
     private class Controller implements ActionListener {
         private OthelloModel model = new OthelloModel();
 
+        /**
+         * Constructor for the controller. Calls the prepareBoard method in OthelloModel
+         * with default mode 0
+         */
         public Controller() {
             model.prepareBoard(0);
         }
@@ -575,6 +544,7 @@ public class OthelloViewController extends JFrame {
                 showAbout();
                 break;
 
+            // These buttons are inside the "Custom Colours" JOptionPane
             case "Color 1 Button":
                 JOptionPane.showConfirmDialog(null, cc1, "Choose a color", JOptionPane.YES_NO_CANCEL_OPTION);
                 color1Preview.setBackground(cc1.getColor());
@@ -599,16 +569,31 @@ public class OthelloViewController extends JFrame {
             addTokens();
         }
 
+        /**
+         * Change the colours of the board
+         * 
+         * @param colourChoice the selected Colour option
+         */
         private void changeColours(String colourChoice) {
+            // The JColorChooser for Custom Colours needs a base point, so use the current
+            // tileA and tileB colours.
             cc1 = new JColorChooser(tileA);
             cc2 = new JColorChooser(tileB);
+
+            // NORMAL COLOURS means black and white tiles
             if (colourChoice == "Normal Colours") {
                 tileA = Color.WHITE;
                 tileB = Color.BLACK;
-            } else if (colourChoice == "Canadian Colours") {
+            }
+
+            // CANADIAN COLOURS means white and red tiles
+            else if (colourChoice == "Canadian Colours") {
                 tileA = Color.WHITE;
                 tileB = Color.RED;
-            } else {
+            }
+
+            // CUSTOM COLOURS means the user gets to select two colours using JColorChooser
+            else {
                 JPanel colorChoosePanel = new JPanel(new BorderLayout());
                 JPanel color1ChoicePanel = new JPanel(new BorderLayout());
                 JPanel color2ChoicePanel = new JPanel(new BorderLayout());
@@ -636,11 +621,14 @@ public class OthelloViewController extends JFrame {
                 JOptionPane.showMessageDialog(null, colorChoosePanel, "Choose Colours",
                         JOptionPane.INFORMATION_MESSAGE);
 
+                // Now that the colours have been selected, set the tileA and tileB values based
+                // on their respective JColorChooser values
                 tileA = cc1.getColor();
                 tileB = cc2.getColor();
 
             }
 
+            // Loop through the board and set the background colors for the squares
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     if ((i + j) % 2 == 0)
@@ -669,6 +657,9 @@ public class OthelloViewController extends JFrame {
             }
         }
 
+        /**
+         * Shows the JOptionPane when the About button is selected
+         */
         private void showAbout() {
             JOptionPane.showMessageDialog(null, "Othello Game\nby Tyson Moyes\n\nJuly 2021", "About",
                     JOptionPane.INFORMATION_MESSAGE);
