@@ -1,7 +1,21 @@
+/*
+ * File Name:   OthelloModel.java
+ * Author:      Tyson Moyes
+ * Assignment:  Assignment 1 Part 2
+ * Date:        June 26th 2021
+ * Professor:   Daniel Cormier
+ * Purpose:     OthelloModel.java contains all the logic for the Othello game, which is manipulated by the Controller in OthelloViewController
+ */
+
 package othello;
 
-import javax.lang.model.util.ElementScanner6;
-
+/**
+ * OthelloModel contains all the logic for the Othello game
+ * 
+ * @author Tyson Moyes
+ * @version 1.0
+ * @since 1.8.0_29
+ */
 public class OthelloModel {
     /** 2-Dimensional array for the board */
     private int[][] board = new int[8][8];
@@ -9,16 +23,8 @@ public class OthelloModel {
     /** Player 1 Chip Count */
     private int player1ChipCount = 0;
 
-    public int getPlayer1ChipCount() {
-        return player1ChipCount;
-    }
-
     /** Player 2 Chip Count */
     private int player2ChipCount = 0;
-
-    public int getPlayer2ChipCount() {
-        return player2ChipCount;
-    }
 
     /**
      * Returns the contents of a given square
@@ -131,7 +137,6 @@ public class OthelloModel {
                 };
                 break;
 
-
             // Inner Square Test
             case 6:
                 board = new int[][]
@@ -161,6 +166,7 @@ public class OthelloModel {
                 };
                 break;
             default:
+                System.err.println("BAD MODE. This should NEVER happen");
                 break;
             }
         // @formatter:on

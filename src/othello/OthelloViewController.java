@@ -128,6 +128,12 @@ public class OthelloViewController extends JFrame {
     // Help Menu Item
     private JMenuItem about = new JMenuItem("About");
 
+    // Color Chooser for Custom Color
+    private JColorChooser cc1;
+    private JColorChooser cc2;
+    private JLabel color1Preview = new JLabel("  ");
+    private JLabel color2Preview = new JLabel("  ");
+
     /****************************************************************************************
      * METHODS
      ***************************************************************************************/
@@ -379,14 +385,6 @@ public class OthelloViewController extends JFrame {
         // Add Starting Tokens with the controller.
         c.addTokens();
 
-        // We need to add the starting tokens. Black has 2 tokens at index [3,4] (D5)
-        // and [4,3] (E4). Black has 2 tokens at index [3,3] (D4) and [4,4] (E5)
-        // squares[3][4].setIcon(player1Icon);
-        // squares[4][3].setIcon(player1Icon);
-
-        // squares[3][3].setIcon(player2Icon);
-        // squares[4][4].setIcon(player2Icon);
-
         // Finally, add the thick border
         board.setBorder(BorderFactory.createLineBorder(Color.GRAY, 5));
     }
@@ -495,7 +493,6 @@ public class OthelloViewController extends JFrame {
 
         JTextArea chatOutput = new JTextArea();
         chatOutput.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        // TODO: Will need to update this with proper piece initialized count
         chatOutput.setText("Player 1 initialized with " + c.getPlayerChipCount(1)
                 + " pieces\nPlayer 2 initialized with " + c.getPlayerChipCount(2) + " pieces");
         chatOutput.setOpaque(false);
@@ -571,10 +568,27 @@ public class OthelloViewController extends JFrame {
             case "Custom Colours":
                 changeColours(btnPressed);
                 break;
-            }
+            case "About":
+                showAbout();
+                break;
 
+            case "Color 1 Button":
+                JOptionPane.showConfirmDialog(null, cc1, "Choose a color", JOptionPane.YES_NO_CANCEL_OPTION);
+                color1Preview.setBackground(cc1.getColor());
+                break;
+
+            case "Color 2 Button":
+                JOptionPane.showConfirmDialog(null, cc2, "Choose a color", JOptionPane.YES_NO_CANCEL_OPTION);
+                color2Preview.setBackground(cc2.getColor());
+                break;
+            }
         }
 
+        /**
+         * Creates a new game based on the desired mode
+         * 
+         * @param mode
+         */
         private void newGame(int mode) {
             System.out.println("New Game, Mode = " + mode);
             model.prepareBoard(mode);
@@ -583,14 +597,45 @@ public class OthelloViewController extends JFrame {
         }
 
         private void changeColours(String colourChoice) {
+            cc1 = new JColorChooser(tileA);
+            cc2 = new JColorChooser(tileB);
             if (colourChoice == "Normal Colours") {
                 tileA = Color.WHITE;
                 tileB = Color.BLACK;
             } else if (colourChoice == "Canadian Colours") {
-                tileA = Color.RED;
-                tileB = Color.WHITE;
+                tileA = Color.WHITE;
+                tileB = Color.RED;
             } else {
-                // TODO: Colour wheel prompt?
+                JPanel colorChoosePanel = new JPanel(new BorderLayout());
+                JPanel color1ChoicePanel = new JPanel(new BorderLayout());
+                JPanel color2ChoicePanel = new JPanel(new BorderLayout());
+                JButton color1Btn = new JButton("Color 1");
+                JButton color2Btn = new JButton("Color 2");
+                color1Btn.addActionListener(this);
+                color2Btn.addActionListener(this);
+
+                color1Btn.setActionCommand("Color 1 Button");
+                color2Btn.setActionCommand("Color 2 Button");
+                color1Preview.setBackground(tileA);
+                color2Preview.setBackground(tileB);
+                color1Preview.setOpaque(true);
+                color2Preview.setOpaque(true);
+                color1Preview.setPreferredSize(new Dimension(50, 50));
+                color2Preview.setPreferredSize(new Dimension(50, 50));
+
+                color1ChoicePanel.add(color1Btn, BorderLayout.WEST);
+                color1ChoicePanel.add(color1Preview, BorderLayout.EAST);
+                color2ChoicePanel.add(color2Btn, BorderLayout.WEST);
+                color2ChoicePanel.add(color2Preview, BorderLayout.EAST);
+
+                colorChoosePanel.add(color1ChoicePanel, BorderLayout.NORTH);
+                colorChoosePanel.add(color2ChoicePanel, BorderLayout.SOUTH);
+                JOptionPane.showMessageDialog(null, colorChoosePanel, "Choose Colours",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+                tileA = cc1.getColor();
+                tileB = cc2.getColor();
+
             }
 
             for (int i = 0; i < 8; i++) {
@@ -621,11 +666,16 @@ public class OthelloViewController extends JFrame {
             }
         }
 
+        private void showAbout() {
+            JOptionPane.showMessageDialog(null, "Othello Game\nby Tyson Moyes\n\nJuly 2021", "About",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+
         private int getPlayerChipCount(int playerNum) {
             if (playerNum == 1) {
-                return model.getPlayer1ChipCount();
+                return model.chipCount(1);
             } else {
-                return model.getPlayer2ChipCount();
+                return model.chipCount(2);
             }
         }
     }
