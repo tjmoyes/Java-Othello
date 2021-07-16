@@ -385,6 +385,9 @@ public class OthelloViewController extends JFrame {
         // Add Starting Tokens with the controller.
         c.addTokens();
 
+        // Add the green border
+        squares[3][3].setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+
         // Finally, add the thick border
         board.setBorder(BorderFactory.createLineBorder(Color.GRAY, 5));
     }

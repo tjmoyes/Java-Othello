@@ -193,6 +193,10 @@ public class OthelloModel {
      * @return true if move is valid, false if not
      */
     public boolean canMove(int row, int col, int player) {
+        if(player == 1 && board[row][col] == 0 && board[row][col] != 1)
+            return true;
+        else if(player == 2 && board[row][col] == 0 && board[row][col] != 2)
+            return true;
         return false;
     }
 
