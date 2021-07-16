@@ -83,6 +83,8 @@ public class OthelloViewController extends JFrame {
     private final ImageIcon leftIcon = new ImageIcon(getClass().getResource("/graphics/leftarrow.png"));
     /** Right Arrow Icon */
     private final ImageIcon rightIcon = new ImageIcon(getClass().getResource("/graphics/rightarrow.png"));
+    /** Checkmark Icon */
+    private final ImageIcon checkMarkIcon = new ImageIcon(getClass().getResource("/graphics/checkmark.png"));
 
     private JTextField chatBarField = new JTextField();
 
