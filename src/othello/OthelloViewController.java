@@ -13,6 +13,9 @@
 package othello;
 
 import javax.swing.*;
+
+import javafx.scene.layout.Border;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -87,6 +90,8 @@ public class OthelloViewController extends JFrame {
     /** Checkmark Icon */
     private final ImageIcon checkMarkIcon = new ImageIcon(getClass().getResource("graphics/checkmark.png"));
 
+    private JLabel player1Info, player2Info;
+
     private JTextField chatBarField = new JTextField();
 
     // Menus
@@ -138,6 +143,9 @@ public class OthelloViewController extends JFrame {
     private JColorChooser cc2;
     private JLabel color1Preview = new JLabel("  ");
     private JLabel color2Preview = new JLabel("  ");
+
+    private int selectedRow = 3;
+    private int selectedColumn = 3;
 
     /****************************************************************************************
      * METHODS
@@ -449,7 +457,7 @@ public class OthelloViewController extends JFrame {
         player1Text.setText("Player 1 Pieces: ");
         playerInfoArea.add(player1Text);
         // This is the actual icon and token count.
-        JLabel player1Info = new JLabel(Integer.toString(c.getPlayerChipCount(2)), player1Icon, JLabel.CENTER);
+        player1Info = new JLabel(Integer.toString(c.getPlayerChipCount(2)), player1Icon, JLabel.CENTER);
         playerInfoArea.add(player1Info);
 
         JLabel player2Text = new JLabel();
@@ -457,7 +465,7 @@ public class OthelloViewController extends JFrame {
         player2Text.setText("Player 2 Pieces: ");
         playerInfoArea.add(player2Text);
         // Icon and token count label
-        JLabel player2Info = new JLabel(Integer.toString(c.getPlayerChipCount(2)), player2Icon, JLabel.CENTER);
+        player2Info = new JLabel(Integer.toString(c.getPlayerChipCount(2)), player2Icon, JLabel.CENTER);
         playerInfoArea.add(player2Info);
 
         northSection.add(playerInfoArea, BorderLayout.EAST);
@@ -519,6 +527,7 @@ public class OthelloViewController extends JFrame {
     private class Controller implements ActionListener {
         private OthelloModel model = new OthelloModel();
         private boolean validMovesEnabled = false;
+        private int currentPlayer = 1;
 
         /**
          * When a button or checkbox is acted upon, this method is called.
@@ -543,6 +552,11 @@ public class OthelloViewController extends JFrame {
                 break;
 
             case "Show Valid Moves":
+                if (showValidMoves.isSelected()) {
+                    validMovesEnabled = true;
+                } else {
+                    validMovesEnabled = false;
+                }
                 showValidMoves();
                 break;
 
@@ -556,6 +570,23 @@ public class OthelloViewController extends JFrame {
                 JOptionPane.showConfirmDialog(null, cc2, "Choose a color", JOptionPane.YES_NO_CANCEL_OPTION);
                 color2Preview.setBackground(cc2.getColor());
                 break;
+
+            case "up":
+            case "down":
+            case "left":
+            case "right":
+                moveSelector(btnPressed);
+                break;
+
+            case "move":
+                int capturedPieces = model.tryMove(selectedRow, selectedColumn, currentPlayer);
+                if (currentPlayer == 1) {
+                    currentPlayer = 2;
+                } else {
+                    currentPlayer = 1;
+                }
+
+                updateGUI(capturedPieces);
             }
         }
 
@@ -568,11 +599,49 @@ public class OthelloViewController extends JFrame {
             System.out.println("New Game, Mode = " + mode);
             model.prepareBoard(mode);
 
+            if (validMovesEnabled)
+                showValidMoves();
+
             addTokens();
         }
 
-        private void updateBoard() {
+        private void updateGUI(int capturedPieces) {
+            addTokens();
+            player1Info.setText(Integer.toString(getPlayerChipCount(1)));
+            player2Info.setText(Integer.toString(getPlayerChipCount(2)));
+            showValidMoves();
+        }
 
+        private void moveSelector(String direction) {
+            squares[selectedRow][selectedColumn].setBorder(null);
+            switch (direction) {
+            case "up":
+                selectedRow--;
+                if (selectedRow < 0) {
+                    selectedRow = 7;
+                }
+                break;
+            case "down":
+                selectedRow++;
+                if (selectedRow > 7) {
+                    selectedRow = 0;
+                }
+                break;
+            case "left":
+                selectedColumn--;
+                if (selectedColumn < 0) {
+                    selectedColumn = 7;
+                }
+                break;
+            case "right":
+                selectedColumn++;
+                if (selectedColumn > 7) {
+                    selectedColumn = 0;
+                }
+                break;
+            }
+
+            squares[selectedRow][selectedColumn].setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
         }
 
         /**
@@ -680,8 +749,7 @@ public class OthelloViewController extends JFrame {
         }
 
         private void showValidMoves() {
-            if (validMovesEnabled) {
-                validMovesEnabled = false;
+            if (validMovesEnabled = false) {
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
                         if (squares[i][j].getIcon() == checkMarkIcon) {
@@ -691,10 +759,9 @@ public class OthelloViewController extends JFrame {
                 }
 
             } else {
-                validMovesEnabled = true;
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
-                        if (model.canMove(i, j, model.getCurrentPlayer()))
+                        if (model.canMove(i, j, currentPlayer))
                             squares[i][j].setIcon(checkMarkIcon);
                     }
                 }

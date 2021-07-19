@@ -28,9 +28,6 @@ public class OthelloModel {
     /** Player 2 Chip Count */
     private int player2ChipCount = 0;
 
-    /** Current player in the game */
-    private int currentPlayer = 1;
-
     // Some class constants for your use:
     public static final int NORMAL = 0;
     public static final int CORNER_TEST = 1;
@@ -58,14 +55,6 @@ public class OthelloModel {
      */
     public int getSquare(int row, int col) {
         return board[row][col];
-    }
-
-    public int getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public void setCurrentPlayer(int player) {
-        currentPlayer = player;
     }
 
     /**
@@ -476,22 +465,191 @@ public class OthelloModel {
      *         illegal
      */
     public int tryMove(int row, int col, int player) {
-        int capturedPieces = 0;
-        int tempRow = row, tempCol = col;
+        int tempRow = row, tempCol = col, capturedPieces = 0;
 
-        // Start north
-        for (int i = tempRow; tempRow >= 0; --tempRow) {
-            if (player == 1) {
-                if (board[tempRow][tempCol] == 0 || board[tempRow][tempCol] == 1) {
-                    break;
+        // Move is only valid if this square is empty
+        if (board[row][col] == 0) {
+            // SOUTH
+            try {
+                if ((player == 1 && board[--tempRow][tempCol] == 2)
+                        || (player == 2 && board[--tempRow][tempCol] == 1)) {
+                    while ((player == 1 && board[tempRow][tempCol] == 2)
+                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                        board[tempRow][tempCol] = player;
+                        capturedPieces++;
+                        tempRow--;
+                        if (board[tempRow][tempCol] == player) {
+                            return capturedPieces;
+                        }
+                    }
                 } else {
-                    board[tempRow][tempCol] = 1;
-                    capturedPieces++;
+                    tempRow = row;
                 }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                capturedPieces = 0;
+                tempRow = row;
+            }
+
+            // SOUTHWEST
+            try {
+                if ((player == 1 && board[--tempRow][++tempCol] == 2)
+                        || (player == 2 && board[--tempRow][++tempCol] == 1)) {
+                    while ((player == 1 && board[tempRow][tempCol] == 2)
+                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                        board[tempRow][tempCol] = player;
+                        capturedPieces++;
+                        tempRow--;
+                        tempCol++;
+                        if (board[tempRow][tempCol] == player) {
+                            return capturedPieces;
+                        }
+                    }
+                } else {
+                    tempRow = row;
+                    tempCol = col;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                capturedPieces = 0;
+                tempRow = row;
+                tempCol = col;
+            }
+
+            // WEST;
+            try {
+                if ((player == 1 && board[tempRow][++tempCol] == 2)
+                        || (player == 2 && board[tempRow][++tempCol] == 1)) {
+                    while ((player == 1 && board[tempRow][tempCol] == 2)
+                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                        board[tempRow][tempCol] = player;
+                        capturedPieces++;
+                        tempCol++;
+                        if (board[tempRow][tempCol] == player) {
+                            return capturedPieces;
+                        }
+                    }
+                } else {
+                    tempCol = col;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                capturedPieces = 0;
+                tempCol = col;
+            }
+
+            // NORTHWEST
+            try {
+                if ((player == 1 && board[++tempRow][++tempCol] == 2)
+                        || (player == 2 && board[++tempRow][++tempCol] == 1)) {
+                    while ((player == 1 && board[tempRow][tempCol] == 2)
+                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                        board[tempRow][tempCol] = player;
+                        capturedPieces++;
+                        tempRow++;
+                        tempCol++;
+                        if (board[tempRow][tempCol] == player) {
+                            return capturedPieces;
+                        }
+                    }
+                } else {
+                    tempRow = row;
+                    tempCol = col;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                capturedPieces = 0;
+                tempRow = row;
+                tempCol = col;
+            }
+
+            // NORTH
+            try {
+                if ((player == 1 && board[++tempRow][tempCol] == 2)
+                        || (player == 2 && board[++tempRow][tempCol] == 1)) {
+                    while ((player == 1 && board[tempRow][tempCol] == 2)
+                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                        board[tempRow][tempCol] = player;
+                        capturedPieces++;
+                        tempRow++;
+
+                        if (board[tempRow][tempCol] == player) {
+                            return capturedPieces;
+                        }
+                    }
+                } else {
+                    tempRow = row;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                capturedPieces = 0;
+                tempRow = row;
+            }
+
+            // NORTHEAST
+            try {
+                if ((player == 1 && board[++tempRow][--tempCol] == 2)
+                        || (player == 2 && board[++tempRow][--tempCol] == 1)) {
+                    while ((player == 1 && board[tempRow][tempCol] == 2)
+                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                        board[tempRow][tempCol] = player;
+                        capturedPieces++;
+                        tempRow++;
+                        tempCol--;
+
+                        if (board[tempRow][tempCol] == player) {
+                            return capturedPieces;
+                        }
+                    }
+                } else {
+                    tempRow = row;
+                    tempCol = col;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                capturedPieces = 0;
+                tempRow = row;
+                tempCol = col;
+            }
+
+            // EAST
+            try {
+                if ((player == 1 && board[tempRow][--tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                    while ((player == 1 && board[tempRow][tempCol] == 2)
+                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                        board[tempRow][tempCol] = player;
+                        tempCol--;
+                        if (board[tempRow][tempCol] == player) {
+                            return capturedPieces;
+                        }
+                    }
+                } else {
+                    tempCol = col;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                capturedPieces = 0;
+                tempRow = row;
+                tempCol = col;
+            }
+
+            // SOUTHEAST
+            try {
+                if ((player == 1 && board[++tempRow][--tempCol] == 2)
+                        || (player == 2 && board[++tempRow][--tempCol] == 1)) {
+                    while ((player == 1 && board[tempRow][tempCol] == 2)
+                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                        board[tempRow][tempCol] = player;
+                        capturedPieces++;
+                        tempRow++;
+                        tempCol--;
+                        if (board[tempRow][tempCol] == player) {
+                            return capturedPieces;
+                        }
+                    }
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                capturedPieces = 0;
+                tempRow = row;
+                tempCol = col;
             }
         }
 
-        return capturedPieces;
+        // illegal move
+        return 0;
     }
 
     /**
