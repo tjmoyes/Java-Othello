@@ -70,21 +70,22 @@ public class OthelloViewController extends JFrame {
     /** Chat input Pane */
     private final JPanel chatInputPanel = new JPanel(new BorderLayout());
 
+    // TODO: Fix icon paths before submission
     // Icons
     /** Player 1 Icon */
-    private final ImageIcon player1Icon = new ImageIcon(getClass().getResource("/graphics/black.png"));
+    private final ImageIcon player1Icon = new ImageIcon(getClass().getResource("graphics/black.png"));
     /** Player 2 Icon */
-    private final ImageIcon player2Icon = new ImageIcon(getClass().getResource("/graphics/white.png"));
+    private final ImageIcon player2Icon = new ImageIcon(getClass().getResource("graphics/white.png"));
     /** Up Arrow Icon */
-    private final ImageIcon upIcon = new ImageIcon(getClass().getResource("/graphics/uparrow.png"));
+    private final ImageIcon upIcon = new ImageIcon(getClass().getResource("graphics/uparrow.png"));
     /** Down Arrow Icon */
-    private final ImageIcon downIcon = new ImageIcon(getClass().getResource("/graphics/downarrow.png"));
+    private final ImageIcon downIcon = new ImageIcon(getClass().getResource("graphics/downarrow.png"));
     /** Left Arrow Icon */
-    private final ImageIcon leftIcon = new ImageIcon(getClass().getResource("/graphics/leftarrow.png"));
+    private final ImageIcon leftIcon = new ImageIcon(getClass().getResource("graphics/leftarrow.png"));
     /** Right Arrow Icon */
-    private final ImageIcon rightIcon = new ImageIcon(getClass().getResource("/graphics/rightarrow.png"));
+    private final ImageIcon rightIcon = new ImageIcon(getClass().getResource("graphics/rightarrow.png"));
     /** Checkmark Icon */
-    private final ImageIcon checkMarkIcon = new ImageIcon(getClass().getResource("/graphics/checkmark.png"));
+    private final ImageIcon checkMarkIcon = new ImageIcon(getClass().getResource("graphics/checkmark.png"));
 
     private JTextField chatBarField = new JTextField();
 
@@ -540,7 +541,7 @@ public class OthelloViewController extends JFrame {
             case "About":
                 showAbout();
                 break;
-            
+
             case "Show Valid Moves":
                 showValidMoves();
                 break;
@@ -571,7 +572,7 @@ public class OthelloViewController extends JFrame {
         }
 
         private void updateBoard() {
-            
+
         }
 
         /**
@@ -679,11 +680,24 @@ public class OthelloViewController extends JFrame {
         }
 
         private void showValidMoves() {
-            if(validMovesEnabled)
+            if (validMovesEnabled) {
                 validMovesEnabled = false;
-            
-            else {
-                model.moveTest(1);
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        if (squares[i][j].getIcon() == checkMarkIcon) {
+                            squares[i][j].setIcon(null);
+                        }
+                    }
+                }
+
+            } else {
+                validMovesEnabled = true;
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        if (model.canMove(i, j, model.getCurrentPlayer()))
+                            squares[i][j].setIcon(checkMarkIcon);
+                    }
+                }
             }
         }
     }

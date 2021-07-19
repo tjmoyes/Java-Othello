@@ -9,6 +9,8 @@
 
 package othello;
 
+import java.lang.reflect.Array;
+
 /**
  * OthelloModel contains all the logic for the Othello game
  * 
@@ -25,6 +27,9 @@ public class OthelloModel {
 
     /** Player 2 Chip Count */
     private int player2ChipCount = 0;
+
+    /** Current player in the game */
+    private int currentPlayer = 1;
 
     // Some class constants for your use:
     public static final int NORMAL = 0;
@@ -55,6 +60,14 @@ public class OthelloModel {
         return board[row][col];
     }
 
+    public int getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(int player) {
+        currentPlayer = player;
+    }
+
     /**
      * Contains all the layouts for testing portions of the code.
      * 
@@ -72,7 +85,7 @@ public class OthelloModel {
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 2, 1, 0, 0, 0},
-                    {0, 0, 0, 2, 1, 0, 0, 0},
+                    {0, 0, 0, 1, 2, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0}
@@ -210,10 +223,149 @@ public class OthelloModel {
      * @return true if move is valid, false if not
      */
     public boolean canMove(int row, int col, int player) {
-        if (player == 1 && board[row][col] == 0 && board[row][col] != 1)
-            return true;
-        else if (player == 2 && board[row][col] == 0 && board[row][col] != 2)
-            return true;
+        int tempRow = row, tempCol = col;
+
+        if (player == 1 && board[row][col] == 0) {
+            // check the surrounding positions for player 2 tokens.
+            // NORTH
+            try {
+                if (board[--tempRow][tempCol] == 2) {
+                    while (board[tempRow][tempCol] == 2) {
+                        tempRow--;
+                        if (board[tempRow][tempCol] == 1) {
+                            return true;
+                        }
+                    }
+                } else {
+                    tempRow = row;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                tempRow = row;
+            }
+
+            // NORTHEAST
+            try {
+                if (board[--tempRow][++tempCol] == 2) {
+                    while (board[--tempRow][++tempCol] == 2) {
+                        tempRow--;
+                        tempCol++;
+                        if (board[tempRow][tempCol] == 1) {
+                            return true;
+                        }
+                    }
+                } else {
+                    tempRow = row;
+                    tempCol = col;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                tempRow = row;
+                tempCol = col;
+            }
+
+            // EAST;
+            try {
+                if (board[tempRow][++tempCol] == 2) {
+                    while (board[tempRow][tempCol] == 2) {
+                        tempCol++;
+                        if (board[tempRow][tempCol] == 1) {
+                            return true;
+                        }
+                    }
+                } else {
+                    tempCol = col;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                tempCol = col;
+            }
+
+            // SOUTHEAST
+            try {
+                if (board[++tempRow][++tempCol] == 2) {
+                    while (board[tempRow][tempCol] == 2) {
+                        tempRow++;
+                        tempCol++;
+                        if (board[tempRow][tempCol] == 1) {
+                            return true;
+                        }
+                    }
+                } else {
+                    tempRow = row;
+                    tempCol = col;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                tempRow = row;
+                tempCol = col;
+            }
+
+            // SOUTH
+            try {
+                if (board[++tempRow][tempCol] == 2) {
+                    while (board[tempRow][tempCol] == 2) {
+                        tempRow++;
+                        if (board[tempRow][tempCol] == 1) {
+                            return true;
+                        }
+                    }
+                } else {
+                    tempRow = row;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                tempRow = row;
+            }
+
+            // SOUTHWEST
+            try {
+                if (board[++tempRow][--tempCol] == 2) {
+                    while (board[tempRow][tempCol] == 2) {
+                        tempRow++;
+                        tempCol--;
+                        if (board[tempRow][tempCol] == 1) {
+                            return true;
+                        }
+                    }
+                } else {
+                    tempRow = row;
+                    tempCol = col;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                tempRow = row;
+                tempCol = col;
+            }
+
+            // WEST
+            try {
+                if (board[tempRow][--tempCol] == 2) {
+                    while (board[tempRow][tempCol] == 2) {
+                        tempCol--;
+                        if (board[tempRow][tempCol] == 1) {
+                            return true;
+                        }
+                    }
+                } else {
+                    tempCol = col;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                tempRow = row;
+                tempCol = col;
+            }
+
+            // NORTHWEST
+            try {
+                if (board[++tempRow][--tempCol] == 2) {
+                    while (board[tempRow][tempCol] == 2) {
+                        tempRow++;
+                        tempCol--;
+                        if (board[tempRow][tempCol] == 1) {
+                            return true;
+                        }
+                    }
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                tempRow = row;
+                tempCol = col;
+            }
+        }
+
         return false;
     }
 
