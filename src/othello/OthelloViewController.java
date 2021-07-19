@@ -565,6 +565,10 @@ public class OthelloViewController extends JFrame {
             addTokens();
         }
 
+        private void updateBoard() {
+            
+        }
+
         /**
          * Change the colours of the board
          * 

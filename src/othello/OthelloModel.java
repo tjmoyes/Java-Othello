@@ -230,7 +230,22 @@ public class OthelloModel {
      *         illegal
      */
     public int tryMove(int row, int col, int player) {
-        return 0;
+        int capturedPieces = 0;
+        int tempRow = row, tempCol = col;
+
+        // Start north
+        for (int i = tempRow; tempRow >= 0; --tempRow) {
+            if (player == 1) {
+                if (board[tempRow][tempCol] == 0 || board[tempRow][tempCol] == 1) {
+                    break;
+                } else {
+                    board[tempRow][tempCol] = 1;
+                    capturedPieces++;
+                }
+            }
+        }
+
+        return capturedPieces;
     }
 
     /**
@@ -240,7 +255,15 @@ public class OthelloModel {
      * @return true if there is a valid move, false if not
      */
     public boolean moveTest(int player) {
-        return true;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (canMove(i, j, player)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
