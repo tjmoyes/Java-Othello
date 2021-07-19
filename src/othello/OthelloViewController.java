@@ -91,6 +91,7 @@ public class OthelloViewController extends JFrame {
     private final ImageIcon checkMarkIcon = new ImageIcon(getClass().getResource("graphics/checkmark.png"));
 
     private JLabel player1Info, player2Info;
+    private JTextArea chatOutput;
 
     private JTextField chatBarField = new JTextField();
 
@@ -476,7 +477,7 @@ public class OthelloViewController extends JFrame {
         chatOutputArea.setBackground(blueBG);
         chatOutputArea.setBorder(BorderFactory.createMatteBorder(5, 0, 5, 0, Color.GRAY));
 
-        JTextArea chatOutput = new JTextArea();
+        chatOutput = new JTextArea();
         chatOutput.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         chatOutput.setText("Player 1 initialized with " + c.getPlayerChipCount(1)
                 + " pieces\nPlayer 2 initialized with " + c.getPlayerChipCount(2) + " pieces");
@@ -552,11 +553,7 @@ public class OthelloViewController extends JFrame {
                 break;
 
             case "Show Valid Moves":
-                if (showValidMoves.isSelected()) {
-                    validMovesEnabled = true;
-                } else {
-                    validMovesEnabled = false;
-                }
+                validMovesEnabled = showValidMoves.isSelected();
                 showValidMoves();
                 break;
 
@@ -580,13 +577,8 @@ public class OthelloViewController extends JFrame {
 
             case "move":
                 int capturedPieces = model.tryMove(selectedRow, selectedColumn, currentPlayer);
-                if (currentPlayer == 1) {
-                    currentPlayer = 2;
-                } else {
-                    currentPlayer = 1;
-                }
-
                 updateGUI(capturedPieces);
+
             }
         }
 
@@ -597,18 +589,25 @@ public class OthelloViewController extends JFrame {
          */
         private void newGame(int mode) {
             System.out.println("New Game, Mode = " + mode);
+            currentPlayer = 1;
             model.prepareBoard(mode);
+            addTokens();
 
             if (validMovesEnabled)
                 showValidMoves();
 
-            addTokens();
         }
 
         private void updateGUI(int capturedPieces) {
             addTokens();
             player1Info.setText(Integer.toString(getPlayerChipCount(1)));
             player2Info.setText(Integer.toString(getPlayerChipCount(2)));
+            chatOutput.append("\nPlayer " + currentPlayer + " has captured " + capturedPieces + " tokens\n");
+            if (currentPlayer == 1) {
+                currentPlayer = 2;
+            } else {
+                currentPlayer = 1;
+            }
             showValidMoves();
         }
 

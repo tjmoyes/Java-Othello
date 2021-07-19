@@ -212,20 +212,14 @@ public class OthelloModel {
      * @return true if move is valid, false if not
      */
     public boolean canMove(int row, int col, int player) {
-        /*
-         * NOTE: This section of code may be a little confusing. Because I need to add a
-         * checkmark on valid moves, the loops are moving in directions based on EMPTY
-         * spaces; however, the comments below are based on TOKEN movement directions
-         */
-
         int tempRow = row, tempCol = col;
 
         // Move is only valid if this square is empty
         if (board[row][col] == 0) {
-            // SOUTH
+            // NORTH
             try {
                 /*
-                 * For a valid SOUTH token move:
+                 * Checking NORTH of empty space
                  * 
                  * if P1 - board[row][col] must be 0, with at least 1 P2 token at
                  * board[row-n][col], and finally a P1 token at board[n][col]
@@ -233,12 +227,13 @@ public class OthelloModel {
                  * if P2 - board[row][col] must be 0, with at least 1 P1 token at
                  * board[row-n][col], and finally a P2 token at board[n][col]
                  */
-                if ((player == 1 && board[--tempRow][tempCol] == 2)
-                        || (player == 2 && board[--tempRow][tempCol] == 1)) {
+                tempRow--;
+                if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
                     while ((player == 1 && board[tempRow][tempCol] == 2)
                             || (player == 2 && board[tempRow][tempCol] == 1)) {
                         tempRow--;
                         if (board[tempRow][tempCol] == player) {
+                            System.out.println("Valid place found NORTH from " + row + ", " + col);
                             return true;
                         }
                     }
@@ -249,40 +244,10 @@ public class OthelloModel {
                 tempRow = row;
             }
 
-            // SOUTHWEST
+            // EAST
             try {
                 /*
-                 * For a valid SOUTHWEST token move:
-                 * 
-                 * if P1 - board[row][col] must be 0, with at least 1 P2 token at
-                 * board[row-n][col+m], and finally a P1 token at board[n][m]
-                 * 
-                 * if P2 - board[row][col] must be 0, with at least 1 P1 token at
-                 * board[row-n][col+m], and finally a P2 token at board[n][m]
-                 */
-                if ((player == 1 && board[--tempRow][++tempCol] == 2)
-                        || (player == 2 && board[--tempRow][++tempCol] == 1)) {
-                    while ((player == 1 && board[tempRow][tempCol] == 2)
-                            || (player == 2 && board[tempRow][tempCol] == 1)) {
-                        tempRow--;
-                        tempCol++;
-                        if (board[tempRow][tempCol] == player) {
-                            return true;
-                        }
-                    }
-                } else {
-                    tempRow = row;
-                    tempCol = col;
-                }
-            } catch (ArrayIndexOutOfBoundsException oobe) {
-                tempRow = row;
-                tempCol = col;
-            }
-
-            // WEST;
-            try {
-                /*
-                 * For a valid WEST token move:
+                 * Checking EAST of empty space
                  * 
                  * if P1 - board[row][col] must be 0, with at least 1 P2 token at
                  * board[row][col+n], and finally a P1 token at board[row][n]
@@ -290,13 +255,13 @@ public class OthelloModel {
                  * if P2 - board[row][col] must be 0, with at least 1 P1 token at
                  * board[row][col+n], and finally a P2 token at board[row][n]
                  */
-
-                if ((player == 1 && board[tempRow][++tempCol] == 2)
-                        || (player == 2 && board[tempRow][++tempCol] == 1)) {
+                tempCol++;
+                if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
                     while ((player == 1 && board[tempRow][tempCol] == 2)
                             || (player == 2 && board[tempRow][tempCol] == 1)) {
                         tempCol++;
                         if (board[tempRow][tempCol] == player) {
+                            System.out.println("Valid place found EAST from " + row + ", " + col);
                             return true;
                         }
                     }
@@ -307,40 +272,10 @@ public class OthelloModel {
                 tempCol = col;
             }
 
-            // NORTHWEST
+            // SOUTH
             try {
                 /*
-                 * For a valid NORTHWEST token move:
-                 * 
-                 * if P1 - board[row][col] must be 0, with at least 1 P2 token at
-                 * board[row+n][col+m], and finally a P1 token at board[n][m]
-                 * 
-                 * if P2 - board[row][col] must be 0, with at least 1 P1 token at
-                 * board[row+n][col+m], and finally a P2 token at board[n][m]
-                 */
-                if ((player == 1 && board[++tempRow][++tempCol] == 2)
-                        || (player == 2 && board[++tempRow][++tempCol] == 1)) {
-                    while ((player == 1 && board[tempRow][tempCol] == 2)
-                            || (player == 2 && board[tempRow][tempCol] == 1)) {
-                        tempRow++;
-                        tempCol++;
-                        if (board[tempRow][tempCol] == player) {
-                            return true;
-                        }
-                    }
-                } else {
-                    tempRow = row;
-                    tempCol = col;
-                }
-            } catch (ArrayIndexOutOfBoundsException oobe) {
-                tempRow = row;
-                tempCol = col;
-            }
-
-            // NORTH
-            try {
-                /*
-                 * For a valid NORTH token move:
+                 * Checking SOUTH of empty space
                  * 
                  * if P1 - board[row][col] must be 0, with at least 1 P2 token at
                  * board[row+n][col], and finally a P1 token at board[n][col]
@@ -348,12 +283,13 @@ public class OthelloModel {
                  * if P2 - board[row][col] must be 0, with at least 1 P1 token at
                  * board[row+n][col], and finally a P2 token at board[n][col]
                  */
-                if ((player == 1 && board[++tempRow][tempCol] == 2)
-                        || (player == 2 && board[++tempRow][tempCol] == 1)) {
+                tempRow++;
+                if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
                     while ((player == 1 && board[tempRow][tempCol] == 2)
                             || (player == 2 && board[tempRow][tempCol] == 1)) {
                         tempRow++;
                         if (board[tempRow][tempCol] == player) {
+                            System.out.println("Valid place found SOUTH from " + row + ", " + col);
                             return true;
                         }
                     }
@@ -364,40 +300,10 @@ public class OthelloModel {
                 tempRow = row;
             }
 
-            // NORTHEAST
+            // WEST
             try {
                 /*
-                 * For a valid NORTHEAST token move:
-                 * 
-                 * if P1 - board[row][col] must be 0, with at least 1 P2 token at
-                 * board[row+n][col-m], and finally a P1 token at board[n][m]
-                 * 
-                 * if P2 - board[row][col] must be 0, with at least 1 P1 token at
-                 * board[row+n][col-m], and finally a P2 token at board[n][m]
-                 */
-                if ((player == 1 && board[++tempRow][--tempCol] == 2)
-                        || (player == 2 && board[++tempRow][--tempCol] == 1)) {
-                    while ((player == 1 && board[tempRow][tempCol] == 2)
-                            || (player == 2 && board[tempRow][tempCol] == 1)) {
-                        tempRow++;
-                        tempCol--;
-                        if (board[tempRow][tempCol] == player) {
-                            return true;
-                        }
-                    }
-                } else {
-                    tempRow = row;
-                    tempCol = col;
-                }
-            } catch (ArrayIndexOutOfBoundsException oobe) {
-                tempRow = row;
-                tempCol = col;
-            }
-
-            // EAST
-            try {
-                /*
-                 * For a valid EAST token move:
+                 * Checking WEST of empty space
                  * 
                  * if P1 - board[row][col] must be 0, with at least 1 P2 token at
                  * board[row][col-n], and finally a P1 token at board[row][n]
@@ -405,11 +311,13 @@ public class OthelloModel {
                  * if P2 - board[row][col] must be 0, with at least 1 P1 token at
                  * board[row][col-n], and finally a P2 token at board[row][col-n]
                  */
-                if ((player == 1 && board[tempRow][--tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                tempCol--;
+                if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
                     while ((player == 1 && board[tempRow][tempCol] == 2)
                             || (player == 2 && board[tempRow][tempCol] == 1)) {
                         tempCol--;
                         if (board[tempRow][tempCol] == player) {
+                            System.out.println("Valid place found WEST from " + row + ", " + col);
                             return true;
                         }
                     }
@@ -421,10 +329,42 @@ public class OthelloModel {
                 tempCol = col;
             }
 
-            // SOUTHEAST
+            // NORTHEAST
             try {
                 /*
-                 * For a valid SOUTHEAST token move:
+                 * Checking NORTHEAST of empty space
+                 * 
+                 * if P1 - board[row][col] must be 0, with at least 1 P2 token at
+                 * board[row-n][col+m], and finally a P1 token at board[n][m]
+                 * 
+                 * if P2 - board[row][col] must be 0, with at least 1 P1 token at
+                 * board[row-n][col+m], and finally a P2 token at board[n][m]
+                 */
+                tempRow--;
+                tempCol++;
+                if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                    while ((player == 1 && board[tempRow][tempCol] == 2)
+                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                        tempRow--;
+                        tempCol++;
+                        if (board[tempRow][tempCol] == player) {
+                            System.out.println("Valid place found NORTHEAST from " + row + ", " + col);
+                            return true;
+                        }
+                    }
+                } else {
+                    tempRow = row;
+                    tempCol = col;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                tempRow = row;
+                tempCol = col;
+            }
+
+            // NORTHWEST
+            try {
+                /*
+                 * Checking NORTHWEST of empty space
                  * 
                  * if P1 - board[row][col] must be 0, with at least 1 P2 token at
                  * board[row+n][col-m], and finally a P1 token at board[n][m]
@@ -432,13 +372,15 @@ public class OthelloModel {
                  * if P2 - board[row][col] must be 0, with at least 1 P1 token at
                  * board[row+n][col-m], and finally a P2 token at board[n][m]
                  */
-                if ((player == 1 && board[++tempRow][--tempCol] == 2)
-                        || (player == 2 && board[++tempRow][--tempCol] == 1)) {
+                tempRow++;
+                tempCol--;
+                if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
                     while ((player == 1 && board[tempRow][tempCol] == 2)
                             || (player == 2 && board[tempRow][tempCol] == 1)) {
                         tempRow++;
                         tempCol--;
                         if (board[tempRow][tempCol] == player) {
+                            System.out.println("Valid place found NORTHWEST from " + row + ", " + col);
                             return true;
                         }
                     }
@@ -447,6 +389,67 @@ public class OthelloModel {
                 tempRow = row;
                 tempCol = col;
             }
+        }
+        // SOUTHEAST
+        try {
+            /*
+             * Checking SOUTHEAST of empty space
+             * 
+             * if P1 - board[row][col] must be 0, with at least 1 P2 token at
+             * board[row+n][col+m], and finally a P1 token at board[n][m]
+             * 
+             * if P2 - board[row][col] must be 0, with at least 1 P1 token at
+             * board[row+n][col+m], and finally a P2 token at board[n][m]
+             */
+            tempRow++;
+            tempCol++;
+            if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                    tempRow++;
+                    tempCol++;
+                    if (board[tempRow][tempCol] == player) {
+                        System.out.println("Valid place found SOUTHEAST from " + row + ", " + col);
+                        return true;
+                    }
+                }
+            } else {
+                tempRow = row;
+                tempCol = col;
+            }
+        } catch (ArrayIndexOutOfBoundsException oobe) {
+            tempRow = row;
+            tempCol = col;
+        }
+
+        // SOUTHWEST
+        try {
+            /*
+             * Checking SOUTHWEST of empty space
+             * 
+             * if P1 - board[row][col] must be 0, with at least 1 P2 token at
+             * board[row+n][col-m], and finally a P1 token at board[n][m]
+             * 
+             * if P2 - board[row][col] must be 0, with at least 1 P1 token at
+             * board[row+n][col-m], and finally a P2 token at board[n][m]
+             */
+            tempRow++;
+            tempCol--;
+            if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                    tempRow++;
+                    tempCol--;
+                    if (board[tempRow][tempCol] == player) {
+                        System.out.println("Valid place found SOUTHWEST from " + row + ", " + col);
+                        return true;
+                    }
+                }
+            } else {
+                tempRow = row;
+                tempCol = col;
+            }
+        } catch (ArrayIndexOutOfBoundsException oobe) {
+            tempRow = row;
+            tempCol = col;
         }
 
         return false;
@@ -479,6 +482,7 @@ public class OthelloModel {
                         capturedPieces++;
                         tempRow--;
                         if (board[tempRow][tempCol] == player) {
+                            board[row][col] = player;
                             return capturedPieces;
                         }
                     }
@@ -501,6 +505,7 @@ public class OthelloModel {
                         tempRow--;
                         tempCol++;
                         if (board[tempRow][tempCol] == player) {
+                            board[row][col] = player;
                             return capturedPieces;
                         }
                     }
@@ -524,6 +529,7 @@ public class OthelloModel {
                         capturedPieces++;
                         tempCol++;
                         if (board[tempRow][tempCol] == player) {
+                            board[row][col] = player;
                             return capturedPieces;
                         }
                     }
@@ -546,6 +552,7 @@ public class OthelloModel {
                         tempRow++;
                         tempCol++;
                         if (board[tempRow][tempCol] == player) {
+                            board[row][col] = player;
                             return capturedPieces;
                         }
                     }
@@ -570,6 +577,7 @@ public class OthelloModel {
                         tempRow++;
 
                         if (board[tempRow][tempCol] == player) {
+                            board[row][col] = player;
                             return capturedPieces;
                         }
                     }
@@ -593,6 +601,7 @@ public class OthelloModel {
                         tempCol--;
 
                         if (board[tempRow][tempCol] == player) {
+                            board[row][col] = player;
                             return capturedPieces;
                         }
                     }
@@ -614,6 +623,7 @@ public class OthelloModel {
                         board[tempRow][tempCol] = player;
                         tempCol--;
                         if (board[tempRow][tempCol] == player) {
+                            board[row][col] = player;
                             return capturedPieces;
                         }
                     }
@@ -637,6 +647,7 @@ public class OthelloModel {
                         tempRow++;
                         tempCol--;
                         if (board[tempRow][tempCol] == player) {
+                            board[row][col] = player;
                             return capturedPieces;
                         }
                     }
