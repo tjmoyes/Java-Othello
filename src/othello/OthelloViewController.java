@@ -14,8 +14,6 @@ package othello;
 
 import javax.swing.*;
 
-import javafx.scene.layout.Border;
-
 import java.awt.*;
 import java.awt.event.*;
 
@@ -608,7 +606,7 @@ public class OthelloViewController extends JFrame {
             } else {
                 currentPlayer = 1;
             }
-            showValidMoves();
+            // showValidMoves();
         }
 
         private void moveSelector(String direction) {

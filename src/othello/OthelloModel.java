@@ -9,8 +9,6 @@
 
 package othello;
 
-import java.lang.reflect.Array;
-
 /**
  * OthelloModel contains all the logic for the Othello game
  * 
@@ -228,18 +226,15 @@ public class OthelloModel {
                  * board[row-n][col], and finally a P2 token at board[n][col]
                  */
                 tempRow--;
-                if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                    while ((player == 1 && board[tempRow][tempCol] == 2)
-                            || (player == 2 && board[tempRow][tempCol] == 1)) {
-                        tempRow--;
-                        if (board[tempRow][tempCol] == player) {
-                            System.out.println("Valid place found NORTH from " + row + ", " + col);
-                            return true;
-                        }
+                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                    tempRow--;
+                    if (board[tempRow][tempCol] == player) {
+                        return true;
                     }
-                } else {
-                    tempRow = row;
                 }
+
+                // invalid, reset the tempRow variable
+                tempRow = row;
             } catch (ArrayIndexOutOfBoundsException oobe) {
                 tempRow = row;
             }
@@ -256,18 +251,15 @@ public class OthelloModel {
                  * board[row][col+n], and finally a P2 token at board[row][n]
                  */
                 tempCol++;
-                if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                    while ((player == 1 && board[tempRow][tempCol] == 2)
-                            || (player == 2 && board[tempRow][tempCol] == 1)) {
-                        tempCol++;
-                        if (board[tempRow][tempCol] == player) {
-                            System.out.println("Valid place found EAST from " + row + ", " + col);
-                            return true;
-                        }
+                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                    tempCol++;
+                    if (board[tempRow][tempCol] == player) {
+                        return true;
                     }
-                } else {
-                    tempCol = col;
                 }
+
+                // invalid move, reset the tempCol variable
+                tempCol = col;
             } catch (ArrayIndexOutOfBoundsException oobe) {
                 tempCol = col;
             }
@@ -284,18 +276,15 @@ public class OthelloModel {
                  * board[row+n][col], and finally a P2 token at board[n][col]
                  */
                 tempRow++;
-                if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                    while ((player == 1 && board[tempRow][tempCol] == 2)
-                            || (player == 2 && board[tempRow][tempCol] == 1)) {
-                        tempRow++;
-                        if (board[tempRow][tempCol] == player) {
-                            System.out.println("Valid place found SOUTH from " + row + ", " + col);
-                            return true;
-                        }
+                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                    tempRow++;
+                    if (board[tempRow][tempCol] == player) {
+                        return true;
                     }
-                } else {
-                    tempRow = row;
                 }
+
+                // Invalid move, reset the tempRow variable
+                tempRow = row;
             } catch (ArrayIndexOutOfBoundsException oobe) {
                 tempRow = row;
             }
@@ -312,18 +301,15 @@ public class OthelloModel {
                  * board[row][col-n], and finally a P2 token at board[row][col-n]
                  */
                 tempCol--;
-                if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                    while ((player == 1 && board[tempRow][tempCol] == 2)
-                            || (player == 2 && board[tempRow][tempCol] == 1)) {
-                        tempCol--;
-                        if (board[tempRow][tempCol] == player) {
-                            System.out.println("Valid place found WEST from " + row + ", " + col);
-                            return true;
-                        }
+                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                    tempCol--;
+                    if (board[tempRow][tempCol] == player) {
+                        return true;
                     }
-                } else {
-                    tempCol = col;
                 }
+
+                // invalid move, reset the tempCol variable
+                tempCol = col;
             } catch (ArrayIndexOutOfBoundsException oobe) {
                 tempRow = row;
                 tempCol = col;
@@ -342,20 +328,17 @@ public class OthelloModel {
                  */
                 tempRow--;
                 tempCol++;
-                if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                    while ((player == 1 && board[tempRow][tempCol] == 2)
-                            || (player == 2 && board[tempRow][tempCol] == 1)) {
-                        tempRow--;
-                        tempCol++;
-                        if (board[tempRow][tempCol] == player) {
-                            System.out.println("Valid place found NORTHEAST from " + row + ", " + col);
-                            return true;
-                        }
+                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                    tempRow--;
+                    tempCol++;
+                    if (board[tempRow][tempCol] == player) {
+                        return true;
                     }
-                } else {
-                    tempRow = row;
-                    tempCol = col;
                 }
+
+                // invalid move, reset tempRow and tempCol
+                tempRow = row;
+                tempCol = col;
             } catch (ArrayIndexOutOfBoundsException oobe) {
                 tempRow = row;
                 tempCol = col;
@@ -367,29 +350,31 @@ public class OthelloModel {
                  * Checking NORTHWEST of empty space
                  * 
                  * if P1 - board[row][col] must be 0, with at least 1 P2 token at
-                 * board[row+n][col-m], and finally a P1 token at board[n][m]
+                 * board[row-n][col-m], and finally a P1 token at board[n][m]
                  * 
                  * if P2 - board[row][col] must be 0, with at least 1 P1 token at
-                 * board[row+n][col-m], and finally a P2 token at board[n][m]
+                 * board[row-n][col-m], and finally a P2 token at board[n][m]
                  */
-                tempRow++;
+                tempRow--;
                 tempCol--;
-                if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                    while ((player == 1 && board[tempRow][tempCol] == 2)
-                            || (player == 2 && board[tempRow][tempCol] == 1)) {
-                        tempRow++;
-                        tempCol--;
-                        if (board[tempRow][tempCol] == player) {
-                            System.out.println("Valid place found NORTHWEST from " + row + ", " + col);
-                            return true;
-                        }
+                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                    tempRow--;
+                    tempCol--;
+                    if (board[tempRow][tempCol] == player) {
+                        return true;
                     }
                 }
+
+                // invalid move, reset tempRow and tempCol
+                tempRow = row;
+                tempCol = col;
+
             } catch (ArrayIndexOutOfBoundsException oobe) {
                 tempRow = row;
                 tempCol = col;
             }
         }
+
         // SOUTHEAST
         try {
             /*
@@ -403,19 +388,17 @@ public class OthelloModel {
              */
             tempRow++;
             tempCol++;
-            if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                    tempRow++;
-                    tempCol++;
-                    if (board[tempRow][tempCol] == player) {
-                        System.out.println("Valid place found SOUTHEAST from " + row + ", " + col);
-                        return true;
-                    }
+            while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                tempRow++;
+                tempCol++;
+                if (board[tempRow][tempCol] == player) {
+                    return true;
                 }
-            } else {
-                tempRow = row;
-                tempCol = col;
             }
+
+            // Invalid move, reset tempRow and tempCol
+            tempRow = row;
+            tempCol = col;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             tempRow = row;
             tempCol = col;
@@ -434,24 +417,23 @@ public class OthelloModel {
              */
             tempRow++;
             tempCol--;
-            if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                    tempRow++;
-                    tempCol--;
-                    if (board[tempRow][tempCol] == player) {
-                        System.out.println("Valid place found SOUTHWEST from " + row + ", " + col);
-                        return true;
-                    }
+            while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                tempRow++;
+                tempCol--;
+                if (board[tempRow][tempCol] == player) {
+                    return true;
                 }
-            } else {
-                tempRow = row;
-                tempCol = col;
             }
+
+            // Invalid move, reset tempRow and tempCol
+            tempRow = row;
+            tempCol = col;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             tempRow = row;
             tempCol = col;
         }
 
+        // No valid move found for this square
         return false;
     }
 
@@ -470,34 +452,41 @@ public class OthelloModel {
     public int tryMove(int row, int col, int player) {
         int tempRow = row, tempCol = col, capturedPieces = 0;
 
+        if (!canMove(row, col, player)) {
+            return 0;
+        }
+
+        else {
+
+        }
+
         // Move is only valid if this square is empty
         if (board[row][col] == 0) {
-            // SOUTH
+            // NORTH
             try {
-                if ((player == 1 && board[--tempRow][tempCol] == 2)
-                        || (player == 2 && board[--tempRow][tempCol] == 1)) {
-                    while ((player == 1 && board[tempRow][tempCol] == 2)
-                            || (player == 2 && board[tempRow][tempCol] == 1)) {
-                        board[tempRow][tempCol] = player;
-                        capturedPieces++;
-                        tempRow--;
-                        if (board[tempRow][tempCol] == player) {
-                            board[row][col] = player;
-                            return capturedPieces;
-                        }
+                tempRow--;
+                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                    board[tempRow][tempCol] = player;
+                    capturedPieces++;
+                    tempRow--;
+                    if (board[tempRow][tempCol] == player) {
+                        board[row][col] = player;
+                        return capturedPieces;
                     }
-                } else {
-                    tempRow = row;
                 }
+
+                // no good
+                tempRow = row;
             } catch (ArrayIndexOutOfBoundsException oobe) {
                 capturedPieces = 0;
                 tempRow = row;
             }
 
-            // SOUTHWEST
+            // NORTHEAST
             try {
-                if ((player == 1 && board[--tempRow][++tempCol] == 2)
-                        || (player == 2 && board[--tempRow][++tempCol] == 1)) {
+                tempRow--;
+                tempCol++;
+                if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
                     while ((player == 1 && board[tempRow][tempCol] == 2)
                             || (player == 2 && board[tempRow][tempCol] == 1)) {
                         board[tempRow][tempCol] = player;
@@ -519,10 +508,10 @@ public class OthelloModel {
                 tempCol = col;
             }
 
-            // WEST;
+            // EAST;
             try {
-                if ((player == 1 && board[tempRow][++tempCol] == 2)
-                        || (player == 2 && board[tempRow][++tempCol] == 1)) {
+                tempCol++;
+                if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
                     while ((player == 1 && board[tempRow][tempCol] == 2)
                             || (player == 2 && board[tempRow][tempCol] == 1)) {
                         board[tempRow][tempCol] = player;
