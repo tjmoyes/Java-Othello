@@ -240,7 +240,15 @@ public class OthelloModel {
      * @return true if there is a valid move, false if not
      */
     public boolean moveTest(int player) {
-        return true;
+        for(int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if(canMove(i, j, player)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -291,7 +291,7 @@ public class OthelloViewController extends JFrame {
                     columnIndicator.setHorizontalAlignment(JLabel.CENTER);
                     columnIndicator.setVerticalAlignment(JLabel.CENTER);
                     columnIndicator.setFont(columnIndicator.getFont().deriveFont(20f));
-                    // Top row needs a 1px border
+                    // Top and bottom row borders for the board
                     if (i == 0 && (j != 0 && j != 9)) {
                         columnIndicator.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY));
                     } else if (i == 9 && (j != 0 && j != 9)) {
@@ -359,7 +359,7 @@ public class OthelloViewController extends JFrame {
         c.addTokens();
 
         // Add the green border
-        squares[3][3].setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+        squares[3][3].setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
 
         // Finally, add the thick border
         board.setBorder(BorderFactory.createLineBorder(Color.GRAY, 5));
@@ -517,6 +517,7 @@ public class OthelloViewController extends JFrame {
      */
     private class Controller implements ActionListener {
         private OthelloModel model = new OthelloModel();
+        private boolean validMovesEnabled = false;
 
         /**
          * When a button or checkbox is acted upon, this method is called.
@@ -538,6 +539,10 @@ public class OthelloViewController extends JFrame {
                 break;
             case "About":
                 showAbout();
+                break;
+            
+            case "Show Valid Moves":
+                showValidMoves();
                 break;
 
             // These buttons are inside the "Custom Colours" JOptionPane
@@ -666,6 +671,15 @@ public class OthelloViewController extends JFrame {
                 return model.chipCount(1);
             } else {
                 return model.chipCount(2);
+            }
+        }
+
+        private void showValidMoves() {
+            if(validMovesEnabled)
+                validMovesEnabled = false;
+            
+            else {
+                model.moveTest(1);
             }
         }
     }
