@@ -223,86 +223,33 @@ public class OthelloModel {
      * @return true if move is valid, false if not
      */
     public boolean canMove(int row, int col, int player) {
+        /*
+         * NOTE: This section of code may be a little confusing. Because I need to add a
+         * checkmark on valid moves, the loops are moving in directions based on EMPTY
+         * spaces; however, the comments below are based on TOKEN movement directions
+         */
+
         int tempRow = row, tempCol = col;
 
-        if (player == 1 && board[row][col] == 0) {
-            // check the surrounding positions for player 2 tokens.
-            // NORTH
-            try {
-                if (board[--tempRow][tempCol] == 2) {
-                    while (board[tempRow][tempCol] == 2) {
-                        tempRow--;
-                        if (board[tempRow][tempCol] == 1) {
-                            return true;
-                        }
-                    }
-                } else {
-                    tempRow = row;
-                }
-            } catch (ArrayIndexOutOfBoundsException oobe) {
-                tempRow = row;
-            }
-
-            // NORTHEAST
-            try {
-                if (board[--tempRow][++tempCol] == 2) {
-                    while (board[--tempRow][++tempCol] == 2) {
-                        tempRow--;
-                        tempCol++;
-                        if (board[tempRow][tempCol] == 1) {
-                            return true;
-                        }
-                    }
-                } else {
-                    tempRow = row;
-                    tempCol = col;
-                }
-            } catch (ArrayIndexOutOfBoundsException oobe) {
-                tempRow = row;
-                tempCol = col;
-            }
-
-            // EAST;
-            try {
-                if (board[tempRow][++tempCol] == 2) {
-                    while (board[tempRow][tempCol] == 2) {
-                        tempCol++;
-                        if (board[tempRow][tempCol] == 1) {
-                            return true;
-                        }
-                    }
-                } else {
-                    tempCol = col;
-                }
-            } catch (ArrayIndexOutOfBoundsException oobe) {
-                tempCol = col;
-            }
-
-            // SOUTHEAST
-            try {
-                if (board[++tempRow][++tempCol] == 2) {
-                    while (board[tempRow][tempCol] == 2) {
-                        tempRow++;
-                        tempCol++;
-                        if (board[tempRow][tempCol] == 1) {
-                            return true;
-                        }
-                    }
-                } else {
-                    tempRow = row;
-                    tempCol = col;
-                }
-            } catch (ArrayIndexOutOfBoundsException oobe) {
-                tempRow = row;
-                tempCol = col;
-            }
-
+        // Move is only valid if this square is empty
+        if (board[row][col] == 0) {
             // SOUTH
             try {
-                if (board[++tempRow][tempCol] == 2) {
-                    while (board[tempRow][tempCol] == 2) {
-                        tempRow++;
-                        if (board[tempRow][tempCol] == 1) {
+                /*
+                 * For a valid SOUTH token move:
+                 * 
+                 * if P1 - board[row][col] must be 0, with at least 1 P2 token at
+                 * board[row-n][col], and finally a P1 token at board[n][col]
+                 * 
+                 * if P2 - board[row][col] must be 0, with at least 1 P1 token at
+                 * board[row-n][col], and finally a P2 token at board[n][col]
+                 */
+                if ((player == 1 && board[--tempRow][tempCol] == 2)
+                        || (player == 2 && board[--tempRow][tempCol] == 1)) {
+                    while ((player == 1 && board[tempRow][tempCol] == 2)
+                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                        tempRow--;
+                        if (board[tempRow][tempCol] == player) {
                             return true;
                         }
                     }
@@ -315,11 +262,22 @@ public class OthelloModel {
 
             // SOUTHWEST
             try {
-                if (board[++tempRow][--tempCol] == 2) {
-                    while (board[tempRow][tempCol] == 2) {
-                        tempRow++;
-                        tempCol--;
-                        if (board[tempRow][tempCol] == 1) {
+                /*
+                 * For a valid SOUTHWEST token move:
+                 * 
+                 * if P1 - board[row][col] must be 0, with at least 1 P2 token at
+                 * board[row-n][col+m], and finally a P1 token at board[n][m]
+                 * 
+                 * if P2 - board[row][col] must be 0, with at least 1 P1 token at
+                 * board[row-n][col+m], and finally a P2 token at board[n][m]
+                 */
+                if ((player == 1 && board[--tempRow][++tempCol] == 2)
+                        || (player == 2 && board[--tempRow][++tempCol] == 1)) {
+                    while ((player == 1 && board[tempRow][tempCol] == 2)
+                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                        tempRow--;
+                        tempCol++;
+                        if (board[tempRow][tempCol] == player) {
                             return true;
                         }
                     }
@@ -332,12 +290,137 @@ public class OthelloModel {
                 tempCol = col;
             }
 
-            // WEST
+            // WEST;
             try {
-                if (board[tempRow][--tempCol] == 2) {
-                    while (board[tempRow][tempCol] == 2) {
+                /*
+                 * For a valid WEST token move:
+                 * 
+                 * if P1 - board[row][col] must be 0, with at least 1 P2 token at
+                 * board[row][col+n], and finally a P1 token at board[row][n]
+                 * 
+                 * if P2 - board[row][col] must be 0, with at least 1 P1 token at
+                 * board[row][col+n], and finally a P2 token at board[row][n]
+                 */
+
+                if ((player == 1 && board[tempRow][++tempCol] == 2)
+                        || (player == 2 && board[tempRow][++tempCol] == 1)) {
+                    while ((player == 1 && board[tempRow][tempCol] == 2)
+                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                        tempCol++;
+                        if (board[tempRow][tempCol] == player) {
+                            return true;
+                        }
+                    }
+                } else {
+                    tempCol = col;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                tempCol = col;
+            }
+
+            // NORTHWEST
+            try {
+                /*
+                 * For a valid NORTHWEST token move:
+                 * 
+                 * if P1 - board[row][col] must be 0, with at least 1 P2 token at
+                 * board[row+n][col+m], and finally a P1 token at board[n][m]
+                 * 
+                 * if P2 - board[row][col] must be 0, with at least 1 P1 token at
+                 * board[row+n][col+m], and finally a P2 token at board[n][m]
+                 */
+                if ((player == 1 && board[++tempRow][++tempCol] == 2)
+                        || (player == 2 && board[++tempRow][++tempCol] == 1)) {
+                    while ((player == 1 && board[tempRow][tempCol] == 2)
+                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                        tempRow++;
+                        tempCol++;
+                        if (board[tempRow][tempCol] == player) {
+                            return true;
+                        }
+                    }
+                } else {
+                    tempRow = row;
+                    tempCol = col;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                tempRow = row;
+                tempCol = col;
+            }
+
+            // NORTH
+            try {
+                /*
+                 * For a valid NORTH token move:
+                 * 
+                 * if P1 - board[row][col] must be 0, with at least 1 P2 token at
+                 * board[row+n][col], and finally a P1 token at board[n][col]
+                 * 
+                 * if P2 - board[row][col] must be 0, with at least 1 P1 token at
+                 * board[row+n][col], and finally a P2 token at board[n][col]
+                 */
+                if ((player == 1 && board[++tempRow][tempCol] == 2)
+                        || (player == 2 && board[++tempRow][tempCol] == 1)) {
+                    while ((player == 1 && board[tempRow][tempCol] == 2)
+                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                        tempRow++;
+                        if (board[tempRow][tempCol] == player) {
+                            return true;
+                        }
+                    }
+                } else {
+                    tempRow = row;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                tempRow = row;
+            }
+
+            // NORTHEAST
+            try {
+                /*
+                 * For a valid NORTHEAST token move:
+                 * 
+                 * if P1 - board[row][col] must be 0, with at least 1 P2 token at
+                 * board[row+n][col-m], and finally a P1 token at board[n][m]
+                 * 
+                 * if P2 - board[row][col] must be 0, with at least 1 P1 token at
+                 * board[row+n][col-m], and finally a P2 token at board[n][m]
+                 */
+                if ((player == 1 && board[++tempRow][--tempCol] == 2)
+                        || (player == 2 && board[++tempRow][--tempCol] == 1)) {
+                    while ((player == 1 && board[tempRow][tempCol] == 2)
+                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                        tempRow++;
                         tempCol--;
-                        if (board[tempRow][tempCol] == 1) {
+                        if (board[tempRow][tempCol] == player) {
+                            return true;
+                        }
+                    }
+                } else {
+                    tempRow = row;
+                    tempCol = col;
+                }
+            } catch (ArrayIndexOutOfBoundsException oobe) {
+                tempRow = row;
+                tempCol = col;
+            }
+
+            // EAST
+            try {
+                /*
+                 * For a valid EAST token move:
+                 * 
+                 * if P1 - board[row][col] must be 0, with at least 1 P2 token at
+                 * board[row][col-n], and finally a P1 token at board[row][n]
+                 * 
+                 * if P2 - board[row][col] must be 0, with at least 1 P1 token at
+                 * board[row][col-n], and finally a P2 token at board[row][col-n]
+                 */
+                if ((player == 1 && board[tempRow][--tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                    while ((player == 1 && board[tempRow][tempCol] == 2)
+                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                        tempCol--;
+                        if (board[tempRow][tempCol] == player) {
                             return true;
                         }
                     }
@@ -349,13 +432,24 @@ public class OthelloModel {
                 tempCol = col;
             }
 
-            // NORTHWEST
+            // SOUTHEAST
             try {
-                if (board[++tempRow][--tempCol] == 2) {
-                    while (board[tempRow][tempCol] == 2) {
+                /*
+                 * For a valid SOUTHEAST token move:
+                 * 
+                 * if P1 - board[row][col] must be 0, with at least 1 P2 token at
+                 * board[row+n][col-m], and finally a P1 token at board[n][m]
+                 * 
+                 * if P2 - board[row][col] must be 0, with at least 1 P1 token at
+                 * board[row+n][col-m], and finally a P2 token at board[n][m]
+                 */
+                if ((player == 1 && board[++tempRow][--tempCol] == 2)
+                        || (player == 2 && board[++tempRow][--tempCol] == 1)) {
+                    while ((player == 1 && board[tempRow][tempCol] == 2)
+                            || (player == 2 && board[tempRow][tempCol] == 1)) {
                         tempRow++;
                         tempCol--;
-                        if (board[tempRow][tempCol] == 1) {
+                        if (board[tempRow][tempCol] == player) {
                             return true;
                         }
                     }
