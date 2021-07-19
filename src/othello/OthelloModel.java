@@ -452,200 +452,232 @@ public class OthelloModel {
     public int tryMove(int row, int col, int player) {
         int tempRow = row, tempCol = col, capturedPieces = 0;
 
-        if (!canMove(row, col, player)) {
-            return 0;
-        }
-
-        else {
-
-        }
-
-        // Move is only valid if this square is empty
-        if (board[row][col] == 0) {
-            // NORTH
-            try {
+        // NORTH
+        try {
+            tempRow--;
+            while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                capturedPieces++;
                 tempRow--;
-                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                    board[tempRow][tempCol] = player;
-                    capturedPieces++;
-                    tempRow--;
-                    if (board[tempRow][tempCol] == player) {
-                        board[row][col] = player;
-                        return capturedPieces;
+                if (board[tempRow][tempCol] == player) {
+                    board[row][col] = player;
+                    int i = capturedPieces;
+                    // backtrack through to flip the captured pieces
+                    while (i > 0) {
+                        tempRow++;
+                        i--;
+                        board[tempRow][tempCol] = player;
                     }
+                    return capturedPieces;
                 }
-
-                // no good
-                tempRow = row;
-            } catch (ArrayIndexOutOfBoundsException oobe) {
-                capturedPieces = 0;
-                tempRow = row;
             }
 
-            // NORTHEAST
-            try {
+            // Can't capture this way, reset tempRow
+            tempRow = row;
+        } catch (ArrayIndexOutOfBoundsException oobe) {
+            // Out of bounds, can't capture, reset temps
+            tempRow = row;
+        }
+
+        // NORTHEAST
+        try {
+            tempRow--;
+            tempCol++;
+            while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                capturedPieces++;
                 tempRow--;
                 tempCol++;
-                if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                    while ((player == 1 && board[tempRow][tempCol] == 2)
-                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                if (board[tempRow][tempCol] == player) {
+                    board[row][col] = player;
+                    int i = capturedPieces;
+                    // backtrack through to flip the captured pieces
+                    while (i > 0) {
+                        tempRow++;
+                        tempCol--;
+                        i--;
                         board[tempRow][tempCol] = player;
-                        capturedPieces++;
+                    }
+                    return capturedPieces;
+                }
+            }
+
+            // Can't capture this way, reset tempRow
+            tempRow = row;
+            tempCol = col;
+        } catch (ArrayIndexOutOfBoundsException oobe) {
+            // Out of bounds, can't capture, reset temps
+            tempRow = row;
+            tempCol = col;
+        }
+
+        // EAST
+        try {
+            tempCol++;
+            while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                capturedPieces++;
+                tempCol++;
+                if (board[tempRow][tempCol] == player) {
+                    board[row][col] = player;
+                    int i = capturedPieces;
+                    // backtrack through to flip the captured pieces
+                    while (i > 0) {
+                        tempCol--;
+                        i--;
+                        board[tempRow][tempCol] = player;
+                    }
+                    return capturedPieces;
+                }
+            }
+
+            // Can't capture this way, reset tempRow
+            tempCol = col;
+        } catch (ArrayIndexOutOfBoundsException oobe) {
+            // Out of bounds, can't capture, reset temps
+            tempCol = col;
+        }
+
+        // SOUTHEAST
+        try {
+            tempRow++;
+            tempCol++;
+            while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                capturedPieces++;
+                tempRow++;
+                tempCol++;
+                if (board[tempRow][tempCol] == player) {
+                    board[row][col] = player;
+                    int i = capturedPieces;
+                    // backtrack through to flip the captured pieces
+                    while (i > 0) {
+                        tempRow--;
+                        tempCol--;
+                        i--;
+                        board[tempRow][tempCol] = player;
+                    }
+                    return capturedPieces;
+                }
+            }
+
+            // Can't capture this way, reset tempRow
+            tempRow = row;
+            tempCol = col;
+        } catch (ArrayIndexOutOfBoundsException oobe) {
+            // Out of bounds, can't capture, reset temps
+            tempRow = row;
+            tempCol = col;
+        }
+
+        // SOUTH
+        try {
+            tempRow++;
+            while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                capturedPieces++;
+                tempRow++;
+                if (board[tempRow][tempCol] == player) {
+                    board[row][col] = player;
+                    int i = capturedPieces;
+                    // backtrack through to flip the captured pieces
+                    while (i > 0) {
+                        tempRow--;
+                        i--;
+                        board[tempRow][tempCol] = player;
+                    }
+                    return capturedPieces;
+                }
+            }
+
+            // Can't capture this way, reset tempRow
+            tempRow = row;
+        } catch (ArrayIndexOutOfBoundsException oobe) {
+            // Out of bounds, can't capture, reset temps
+            tempRow = row;
+        }
+
+        // SOUTHWEST
+        try {
+            tempRow++;
+            tempCol--;
+            while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                capturedPieces++;
+                tempRow++;
+                tempCol--;
+                if (board[tempRow][tempCol] == player) {
+                    board[row][col] = player;
+                    int i = capturedPieces;
+                    // backtrack through to flip the captured pieces
+                    while (i > 0) {
                         tempRow--;
                         tempCol++;
-                        if (board[tempRow][tempCol] == player) {
-                            board[row][col] = player;
-                            return capturedPieces;
-                        }
+                        i--;
+                        board[tempRow][tempCol] = player;
                     }
-                } else {
-                    tempRow = row;
-                    tempCol = col;
+                    return capturedPieces;
                 }
-            } catch (ArrayIndexOutOfBoundsException oobe) {
-                capturedPieces = 0;
-                tempRow = row;
-                tempCol = col;
             }
 
-            // EAST;
-            try {
-                tempCol++;
-                if ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                    while ((player == 1 && board[tempRow][tempCol] == 2)
-                            || (player == 2 && board[tempRow][tempCol] == 1)) {
-                        board[tempRow][tempCol] = player;
-                        capturedPieces++;
+            // Can't capture this way, reset tempRow
+            tempRow = row;
+            tempCol = col;
+        } catch (ArrayIndexOutOfBoundsException oobe) {
+            // Out of bounds, can't capture, reset temps
+            tempRow = row;
+            tempCol = col;
+        }
+
+        // WEST
+        try {
+            tempCol--;
+            while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                capturedPieces++;
+                tempCol--;
+                if (board[tempRow][tempCol] == player) {
+                    board[row][col] = player;
+                    int i = capturedPieces;
+                    // backtrack through to flip the captured pieces
+                    while (i > 0) {
                         tempCol++;
-                        if (board[tempRow][tempCol] == player) {
-                            board[row][col] = player;
-                            return capturedPieces;
-                        }
+                        i--;
+                        board[tempRow][tempCol] = player;
                     }
-                } else {
-                    tempCol = col;
+                    return capturedPieces;
                 }
-            } catch (ArrayIndexOutOfBoundsException oobe) {
-                capturedPieces = 0;
-                tempCol = col;
             }
 
-            // NORTHWEST
-            try {
-                if ((player == 1 && board[++tempRow][++tempCol] == 2)
-                        || (player == 2 && board[++tempRow][++tempCol] == 1)) {
-                    while ((player == 1 && board[tempRow][tempCol] == 2)
-                            || (player == 2 && board[tempRow][tempCol] == 1)) {
-                        board[tempRow][tempCol] = player;
-                        capturedPieces++;
+            // Can't capture this way, reset tempRow
+            tempCol = col;
+        } catch (ArrayIndexOutOfBoundsException oobe) {
+            // Out of bounds, can't capture, reset temps
+            tempCol = col;
+        }
+
+        // NORTHWEST
+        try {
+            tempRow--;
+            tempCol--;
+            while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                capturedPieces++;
+                tempRow--;
+                tempCol--;
+                if (board[tempRow][tempCol] == player) {
+                    board[row][col] = player;
+                    int i = capturedPieces;
+                    // backtrack through to flip the captured pieces
+                    while (i > 0) {
                         tempRow++;
                         tempCol++;
-                        if (board[tempRow][tempCol] == player) {
-                            board[row][col] = player;
-                            return capturedPieces;
-                        }
-                    }
-                } else {
-                    tempRow = row;
-                    tempCol = col;
-                }
-            } catch (ArrayIndexOutOfBoundsException oobe) {
-                capturedPieces = 0;
-                tempRow = row;
-                tempCol = col;
-            }
-
-            // NORTH
-            try {
-                if ((player == 1 && board[++tempRow][tempCol] == 2)
-                        || (player == 2 && board[++tempRow][tempCol] == 1)) {
-                    while ((player == 1 && board[tempRow][tempCol] == 2)
-                            || (player == 2 && board[tempRow][tempCol] == 1)) {
+                        i--;
                         board[tempRow][tempCol] = player;
-                        capturedPieces++;
-                        tempRow++;
-
-                        if (board[tempRow][tempCol] == player) {
-                            board[row][col] = player;
-                            return capturedPieces;
-                        }
                     }
-                } else {
-                    tempRow = row;
+                    return capturedPieces;
                 }
-            } catch (ArrayIndexOutOfBoundsException oobe) {
-                capturedPieces = 0;
-                tempRow = row;
             }
 
-            // NORTHEAST
-            try {
-                if ((player == 1 && board[++tempRow][--tempCol] == 2)
-                        || (player == 2 && board[++tempRow][--tempCol] == 1)) {
-                    while ((player == 1 && board[tempRow][tempCol] == 2)
-                            || (player == 2 && board[tempRow][tempCol] == 1)) {
-                        board[tempRow][tempCol] = player;
-                        capturedPieces++;
-                        tempRow++;
-                        tempCol--;
-
-                        if (board[tempRow][tempCol] == player) {
-                            board[row][col] = player;
-                            return capturedPieces;
-                        }
-                    }
-                } else {
-                    tempRow = row;
-                    tempCol = col;
-                }
-            } catch (ArrayIndexOutOfBoundsException oobe) {
-                capturedPieces = 0;
-                tempRow = row;
-                tempCol = col;
-            }
-
-            // EAST
-            try {
-                if ((player == 1 && board[tempRow][--tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                    while ((player == 1 && board[tempRow][tempCol] == 2)
-                            || (player == 2 && board[tempRow][tempCol] == 1)) {
-                        board[tempRow][tempCol] = player;
-                        tempCol--;
-                        if (board[tempRow][tempCol] == player) {
-                            board[row][col] = player;
-                            return capturedPieces;
-                        }
-                    }
-                } else {
-                    tempCol = col;
-                }
-            } catch (ArrayIndexOutOfBoundsException oobe) {
-                capturedPieces = 0;
-                tempRow = row;
-                tempCol = col;
-            }
-
-            // SOUTHEAST
-            try {
-                if ((player == 1 && board[++tempRow][--tempCol] == 2)
-                        || (player == 2 && board[++tempRow][--tempCol] == 1)) {
-                    while ((player == 1 && board[tempRow][tempCol] == 2)
-                            || (player == 2 && board[tempRow][tempCol] == 1)) {
-                        board[tempRow][tempCol] = player;
-                        capturedPieces++;
-                        tempRow++;
-                        tempCol--;
-                        if (board[tempRow][tempCol] == player) {
-                            board[row][col] = player;
-                            return capturedPieces;
-                        }
-                    }
-                }
-            } catch (ArrayIndexOutOfBoundsException oobe) {
-                capturedPieces = 0;
-                tempRow = row;
-                tempCol = col;
-            }
+            // Can't capture this way, reset tempRow
+            tempRow = row;
+            tempCol = col;
+        } catch (ArrayIndexOutOfBoundsException oobe) {
+            // Out of bounds, can't capture, reset temps
+            tempRow = row;
+            tempCol = col;
         }
 
         // illegal move
