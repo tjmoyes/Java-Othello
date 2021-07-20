@@ -552,6 +552,7 @@ public class OthelloViewController extends JFrame {
 
             case "Show Valid Moves":
                 validMovesEnabled = showValidMoves.isSelected();
+                System.out.println(validMovesEnabled);
                 showValidMoves();
                 break;
 
@@ -737,6 +738,12 @@ public class OthelloViewController extends JFrame {
                     JOptionPane.INFORMATION_MESSAGE);
         }
 
+        /**
+         * Based on provided player number, returns the chip count from the model
+         * 
+         * @param playerNum the requested player
+         * @return the result from chipCount
+         */
         private int getPlayerChipCount(int playerNum) {
             if (playerNum == 1) {
                 return model.chipCount(1);
@@ -745,8 +752,11 @@ public class OthelloViewController extends JFrame {
             }
         }
 
+        /**
+         * Based on value of validMovesEnabled, show or hide valid moves
+         */
         private void showValidMoves() {
-            if (validMovesEnabled = false) {
+            if (!validMovesEnabled) {
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
                         if (squares[i][j].getIcon() == checkMarkIcon) {

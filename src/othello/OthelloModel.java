@@ -213,7 +213,9 @@ public class OthelloModel {
         int tempRow = row, tempCol = col;
 
         // Move is only valid if this square is empty
-        if (board[row][col] == 0) {
+        if (board[row][col] != EMPTY) {
+            return false;
+        } else {
             // NORTH
             try {
                 /*
@@ -226,7 +228,8 @@ public class OthelloModel {
                  * board[row-n][col], and finally a P2 token at board[n][col]
                  */
                 tempRow--;
-                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                while ((player == 1 && board[tempRow][tempCol] == WHITE)
+                        || (player == 2 && board[tempRow][tempCol] == BLACK)) {
                     tempRow--;
                     if (board[tempRow][tempCol] == player) {
                         return true;
@@ -251,7 +254,8 @@ public class OthelloModel {
                  * board[row][col+n], and finally a P2 token at board[row][n]
                  */
                 tempCol++;
-                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                while ((player == 1 && board[tempRow][tempCol] == WHITE)
+                        || (player == 2 && board[tempRow][tempCol] == BLACK)) {
                     tempCol++;
                     if (board[tempRow][tempCol] == player) {
                         return true;
@@ -276,7 +280,8 @@ public class OthelloModel {
                  * board[row+n][col], and finally a P2 token at board[n][col]
                  */
                 tempRow++;
-                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                while ((player == 1 && board[tempRow][tempCol] == WHITE)
+                        || (player == 2 && board[tempRow][tempCol] == BLACK)) {
                     tempRow++;
                     if (board[tempRow][tempCol] == player) {
                         return true;
@@ -301,7 +306,8 @@ public class OthelloModel {
                  * board[row][col-n], and finally a P2 token at board[row][col-n]
                  */
                 tempCol--;
-                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                while ((player == 1 && board[tempRow][tempCol] == WHITE)
+                        || (player == 2 && board[tempRow][tempCol] == BLACK)) {
                     tempCol--;
                     if (board[tempRow][tempCol] == player) {
                         return true;
@@ -328,7 +334,8 @@ public class OthelloModel {
                  */
                 tempRow--;
                 tempCol++;
-                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                while ((player == 1 && board[tempRow][tempCol] == WHITE)
+                        || (player == 2 && board[tempRow][tempCol] == BLACK)) {
                     tempRow--;
                     tempCol++;
                     if (board[tempRow][tempCol] == player) {
@@ -357,7 +364,8 @@ public class OthelloModel {
                  */
                 tempRow--;
                 tempCol--;
-                while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+                while ((player == 1 && board[tempRow][tempCol] == WHITE)
+                        || (player == 2 && board[tempRow][tempCol] == BLACK)) {
                     tempRow--;
                     tempCol--;
                     if (board[tempRow][tempCol] == player) {
@@ -388,7 +396,8 @@ public class OthelloModel {
              */
             tempRow++;
             tempCol++;
-            while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+            while ((player == 1 && board[tempRow][tempCol] == WHITE)
+                    || (player == 2 && board[tempRow][tempCol] == BLACK)) {
                 tempRow++;
                 tempCol++;
                 if (board[tempRow][tempCol] == player) {
@@ -417,7 +426,8 @@ public class OthelloModel {
              */
             tempRow++;
             tempCol--;
-            while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
+            while ((player == 1 && board[tempRow][tempCol] == WHITE)
+                    || (player == 2 && board[tempRow][tempCol] == BLACK)) {
                 tempRow++;
                 tempCol--;
                 if (board[tempRow][tempCol] == player) {
@@ -471,11 +481,13 @@ public class OthelloModel {
                 }
             }
 
-            // Can't capture this way, reset tempRow
+            // Can't capture this way, reset temps
             tempRow = row;
+            capturedPieces = 0;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             // Out of bounds, can't capture, reset temps
             tempRow = row;
+            capturedPieces = 0;
         }
 
         // NORTHEAST
@@ -500,13 +512,15 @@ public class OthelloModel {
                 }
             }
 
-            // Can't capture this way, reset tempRow
+            // Can't capture this way, reset temps
             tempRow = row;
             tempCol = col;
+            capturedPieces = 0;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             // Out of bounds, can't capture, reset temps
             tempRow = row;
             tempCol = col;
+            capturedPieces = 0;
         }
 
         // EAST
@@ -528,11 +542,13 @@ public class OthelloModel {
                 }
             }
 
-            // Can't capture this way, reset tempRow
+            // Can't capture this way, reset temps
             tempCol = col;
+            capturedPieces = 0;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             // Out of bounds, can't capture, reset temps
             tempCol = col;
+            capturedPieces = 0;
         }
 
         // SOUTHEAST
@@ -557,13 +573,15 @@ public class OthelloModel {
                 }
             }
 
-            // Can't capture this way, reset tempRow
+            // Can't capture this way, reset temps
             tempRow = row;
             tempCol = col;
+            capturedPieces = 0;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             // Out of bounds, can't capture, reset temps
             tempRow = row;
             tempCol = col;
+            capturedPieces = 0;
         }
 
         // SOUTH
@@ -585,11 +603,13 @@ public class OthelloModel {
                 }
             }
 
-            // Can't capture this way, reset tempRow
+            // Can't capture this way, reset temps
             tempRow = row;
+            capturedPieces = 0;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             // Out of bounds, can't capture, reset temps
             tempRow = row;
+            capturedPieces = 0;
         }
 
         // SOUTHWEST
@@ -614,13 +634,15 @@ public class OthelloModel {
                 }
             }
 
-            // Can't capture this way, reset tempRow
+            // Can't capture this way, reset temps
             tempRow = row;
             tempCol = col;
+            capturedPieces = 0;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             // Out of bounds, can't capture, reset temps
             tempRow = row;
             tempCol = col;
+            capturedPieces = 0;
         }
 
         // WEST
@@ -644,9 +666,11 @@ public class OthelloModel {
 
             // Can't capture this way, reset tempRow
             tempCol = col;
+            capturedPieces = 0;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             // Out of bounds, can't capture, reset temps
             tempCol = col;
+            capturedPieces = 0;
         }
 
         // NORTHWEST
@@ -674,10 +698,12 @@ public class OthelloModel {
             // Can't capture this way, reset tempRow
             tempRow = row;
             tempCol = col;
+            capturedPieces = 0;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             // Out of bounds, can't capture, reset temps
             tempRow = row;
             tempCol = col;
+            capturedPieces = 0;
         }
 
         // illegal move
@@ -713,4 +739,5 @@ public class OthelloModel {
             return player1ChipCount;
         return player2ChipCount;
     }
+
 }
