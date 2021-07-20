@@ -478,7 +478,7 @@ public class OthelloViewController extends JFrame {
         chatOutput = new JTextArea();
         chatOutput.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         chatOutput.setText("Player 1 initialized with " + c.getPlayerChipCount(1)
-                + " pieces\nPlayer 2 initialized with " + c.getPlayerChipCount(2) + " pieces");
+                + " piece(s)\nPlayer 2 initialized with " + c.getPlayerChipCount(2) + " piece(s)");
         chatOutput.setOpaque(false);
         chatOutput.setWrapStyleWord(true);
         chatOutput.setEditable(false);
@@ -577,14 +577,18 @@ public class OthelloViewController extends JFrame {
             case "move":
                 int capturedPieces = model.tryMove(selectedRow, selectedColumn, currentPlayer);
                 updateGUI(capturedPieces);
+                break;
 
+            case "skip":
+                checkEndgame();
+                break;
             }
         }
 
         /**
          * Creates a new game based on the desired mode
          * 
-         * @param mode
+         * @param mode desired debug scenario
          */
         private void newGame(int mode) {
             System.out.println("New Game, Mode = " + mode);
@@ -592,22 +596,47 @@ public class OthelloViewController extends JFrame {
             model.prepareBoard(mode);
             addTokens();
 
+            if (!move.isEnabled()) {
+                move.setText("move");
+                move.setActionCommand("move");
+                move.setEnabled(true);
+            }
+            chatOutput.setText("Player 1 has been initialized with " + getPlayerChipCount(1)
+                    + " piece(s)\nPlayer 2 has been initialized with " + getPlayerChipCount(2) + " piece(s)");
+
+            player1Info.setText(Integer.toString(getPlayerChipCount(1)));
+            player2Info.setText(Integer.toString(getPlayerChipCount(2)));
+
             if (validMovesEnabled)
                 showValidMoves();
 
+            checkEndgame();
+
         }
 
+        /**
+         * Updates the GUI items after a move is performed
+         * 
+         * @param capturedPieces the number of captured pieces from the move
+         */
         private void updateGUI(int capturedPieces) {
             addTokens();
             player1Info.setText(Integer.toString(getPlayerChipCount(1)));
             player2Info.setText(Integer.toString(getPlayerChipCount(2)));
-            chatOutput.append("\nPlayer " + currentPlayer + " has captured " + capturedPieces + " tokens\n");
+            chatOutput.append("\nPlayer " + currentPlayer + " has captured " + capturedPieces + " piece(s)");
             if (currentPlayer == 1) {
                 currentPlayer = 2;
             } else {
                 currentPlayer = 1;
             }
-            // showValidMoves();
+            if (validMovesEnabled)
+                showValidMoves();
+
+            if (!model.moveTest(currentPlayer)) {
+                move.setText("skip");
+                move.setActionCommand("skip");
+                chatOutput.append("\nPlayer " + currentPlayer + " has no valid moves. Press skip");
+            }
         }
 
         private void moveSelector(String direction) {
@@ -772,6 +801,38 @@ public class OthelloViewController extends JFrame {
                             squares[i][j].setIcon(checkMarkIcon);
                     }
                 }
+            }
+        }
+
+        /**
+         * checks if the game is over
+         */
+        private void checkEndgame() {
+            if (!model.moveTest(currentPlayer)) {
+                if (currentPlayer == 1) {
+                    currentPlayer = 2;
+                } else {
+                    currentPlayer = 1;
+                }
+                if (!model.moveTest(currentPlayer)) {
+                    move.setEnabled(false);
+                    chatOutput.append("\nGAME OVER!");
+                    if (getPlayerChipCount(1) > getPlayerChipCount(2)) {
+                        chatOutput.append("\nPlayer 1 wins!\n");
+                    } else if (getPlayerChipCount(2) > getPlayerChipCount(1)) {
+                        chatOutput.append("\nPlayer 2 wins!\n");
+                    } else {
+                        chatOutput.append("\nIt's a draw!\n");
+                    }
+
+                    chatOutput.append("Select New Game to play again.");
+                } else {
+                    move.setText("move");
+                    move.setActionCommand("move");
+                }
+            } else {
+                move.setText("move");
+                move.setActionCommand("move");
             }
         }
     }

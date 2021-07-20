@@ -187,18 +187,6 @@ public class OthelloModel {
                 break;
             }
         // @formatter:on
-
-        // update player chip initialized count
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (board[i][j] == 1)
-                    player1ChipCount++;
-                else if (board[i][j] == 2)
-                    player2ChipCount++;
-                else
-                    continue;
-            }
-        }
     }
 
     /**
@@ -460,34 +448,35 @@ public class OthelloModel {
      *         illegal
      */
     public int tryMove(int row, int col, int player) {
-        int tempRow = row, tempCol = col, capturedPieces = 0;
+        int tempRow = row, tempCol = col, capturedPieces = 0, jumpedSpaces = 0;
+        ;
 
         // NORTH
         try {
             tempRow--;
             while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                capturedPieces++;
+                jumpedSpaces++;
                 tempRow--;
                 if (board[tempRow][tempCol] == player) {
                     board[row][col] = player;
-                    int i = capturedPieces;
                     // backtrack through to flip the captured pieces
-                    while (i > 0) {
+                    while (jumpedSpaces > 0) {
                         tempRow++;
-                        i--;
+                        jumpedSpaces--;
                         board[tempRow][tempCol] = player;
+                        capturedPieces++;
                     }
-                    return capturedPieces;
+                    break;
                 }
             }
 
             // Can't capture this way, reset temps
             tempRow = row;
-            capturedPieces = 0;
+            jumpedSpaces = 0;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             // Out of bounds, can't capture, reset temps
             tempRow = row;
-            capturedPieces = 0;
+            jumpedSpaces = 0;
         }
 
         // NORTHEAST
@@ -495,60 +484,60 @@ public class OthelloModel {
             tempRow--;
             tempCol++;
             while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                capturedPieces++;
+                jumpedSpaces++;
                 tempRow--;
                 tempCol++;
                 if (board[tempRow][tempCol] == player) {
                     board[row][col] = player;
-                    int i = capturedPieces;
                     // backtrack through to flip the captured pieces
-                    while (i > 0) {
+                    while (jumpedSpaces > 0) {
                         tempRow++;
                         tempCol--;
-                        i--;
+                        jumpedSpaces--;
                         board[tempRow][tempCol] = player;
+                        capturedPieces++;
                     }
-                    return capturedPieces;
+                    break;
                 }
             }
 
             // Can't capture this way, reset temps
             tempRow = row;
             tempCol = col;
-            capturedPieces = 0;
+            jumpedSpaces = 0;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             // Out of bounds, can't capture, reset temps
             tempRow = row;
             tempCol = col;
-            capturedPieces = 0;
+            jumpedSpaces = 0;
         }
 
         // EAST
         try {
             tempCol++;
             while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                capturedPieces++;
+                jumpedSpaces++;
                 tempCol++;
                 if (board[tempRow][tempCol] == player) {
                     board[row][col] = player;
-                    int i = capturedPieces;
                     // backtrack through to flip the captured pieces
-                    while (i > 0) {
+                    while (jumpedSpaces > 0) {
                         tempCol--;
-                        i--;
+                        jumpedSpaces--;
                         board[tempRow][tempCol] = player;
+                        capturedPieces++;
                     }
-                    return capturedPieces;
+                    break;
                 }
             }
 
             // Can't capture this way, reset temps
             tempCol = col;
-            capturedPieces = 0;
+            jumpedSpaces = 0;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             // Out of bounds, can't capture, reset temps
             tempCol = col;
-            capturedPieces = 0;
+            jumpedSpaces = 0;
         }
 
         // SOUTHEAST
@@ -556,60 +545,60 @@ public class OthelloModel {
             tempRow++;
             tempCol++;
             while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                capturedPieces++;
+                jumpedSpaces++;
                 tempRow++;
                 tempCol++;
                 if (board[tempRow][tempCol] == player) {
                     board[row][col] = player;
-                    int i = capturedPieces;
                     // backtrack through to flip the captured pieces
-                    while (i > 0) {
+                    while (jumpedSpaces > 0) {
                         tempRow--;
                         tempCol--;
-                        i--;
+                        jumpedSpaces--;
                         board[tempRow][tempCol] = player;
+                        capturedPieces++;
                     }
-                    return capturedPieces;
+                    break;
                 }
             }
 
             // Can't capture this way, reset temps
             tempRow = row;
             tempCol = col;
-            capturedPieces = 0;
+            jumpedSpaces = 0;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             // Out of bounds, can't capture, reset temps
             tempRow = row;
             tempCol = col;
-            capturedPieces = 0;
+            jumpedSpaces = 0;
         }
 
         // SOUTH
         try {
             tempRow++;
             while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                capturedPieces++;
+                jumpedSpaces++;
                 tempRow++;
                 if (board[tempRow][tempCol] == player) {
                     board[row][col] = player;
-                    int i = capturedPieces;
                     // backtrack through to flip the captured pieces
-                    while (i > 0) {
+                    while (jumpedSpaces > 0) {
                         tempRow--;
-                        i--;
+                        jumpedSpaces--;
                         board[tempRow][tempCol] = player;
+                        capturedPieces++;
                     }
-                    return capturedPieces;
+                    break;
                 }
             }
 
             // Can't capture this way, reset temps
             tempRow = row;
-            capturedPieces = 0;
+            jumpedSpaces = 0;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             // Out of bounds, can't capture, reset temps
             tempRow = row;
-            capturedPieces = 0;
+            jumpedSpaces = 0;
         }
 
         // SOUTHWEST
@@ -617,60 +606,60 @@ public class OthelloModel {
             tempRow++;
             tempCol--;
             while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                capturedPieces++;
+                jumpedSpaces++;
                 tempRow++;
                 tempCol--;
                 if (board[tempRow][tempCol] == player) {
                     board[row][col] = player;
-                    int i = capturedPieces;
                     // backtrack through to flip the captured pieces
-                    while (i > 0) {
+                    while (jumpedSpaces > 0) {
                         tempRow--;
                         tempCol++;
-                        i--;
+                        jumpedSpaces--;
                         board[tempRow][tempCol] = player;
+                        capturedPieces++;
                     }
-                    return capturedPieces;
+                    break;
                 }
             }
 
             // Can't capture this way, reset temps
             tempRow = row;
             tempCol = col;
-            capturedPieces = 0;
+            jumpedSpaces = 0;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             // Out of bounds, can't capture, reset temps
             tempRow = row;
             tempCol = col;
-            capturedPieces = 0;
+            jumpedSpaces = 0;
         }
 
         // WEST
         try {
             tempCol--;
             while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                capturedPieces++;
+                jumpedSpaces++;
                 tempCol--;
                 if (board[tempRow][tempCol] == player) {
                     board[row][col] = player;
-                    int i = capturedPieces;
                     // backtrack through to flip the captured pieces
-                    while (i > 0) {
+                    while (jumpedSpaces > 0) {
                         tempCol++;
-                        i--;
+                        jumpedSpaces--;
                         board[tempRow][tempCol] = player;
+                        capturedPieces++;
                     }
-                    return capturedPieces;
+                    break;
                 }
             }
 
             // Can't capture this way, reset tempRow
             tempCol = col;
-            capturedPieces = 0;
+            jumpedSpaces = 0;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             // Out of bounds, can't capture, reset temps
             tempCol = col;
-            capturedPieces = 0;
+            jumpedSpaces = 0;
         }
 
         // NORTHWEST
@@ -678,36 +667,36 @@ public class OthelloModel {
             tempRow--;
             tempCol--;
             while ((player == 1 && board[tempRow][tempCol] == 2) || (player == 2 && board[tempRow][tempCol] == 1)) {
-                capturedPieces++;
+                jumpedSpaces++;
                 tempRow--;
                 tempCol--;
                 if (board[tempRow][tempCol] == player) {
                     board[row][col] = player;
-                    int i = capturedPieces;
                     // backtrack through to flip the captured pieces
-                    while (i > 0) {
+                    while (jumpedSpaces > 0) {
                         tempRow++;
                         tempCol++;
-                        i--;
+                        jumpedSpaces--;
                         board[tempRow][tempCol] = player;
+                        capturedPieces++;
                     }
-                    return capturedPieces;
+                    break;
                 }
             }
 
             // Can't capture this way, reset tempRow
             tempRow = row;
             tempCol = col;
-            capturedPieces = 0;
+            jumpedSpaces = 0;
         } catch (ArrayIndexOutOfBoundsException oobe) {
             // Out of bounds, can't capture, reset temps
             tempRow = row;
             tempCol = col;
-            capturedPieces = 0;
+            jumpedSpaces = 0;
         }
 
-        // illegal move
-        return 0;
+        // will return 0 if no legal moves exist
+        return capturedPieces;
     }
 
     /**
@@ -735,9 +724,23 @@ public class OthelloModel {
      * @return
      */
     public int chipCount(int player) {
-        if (player == 1)
+        player1ChipCount = 0;
+        player2ChipCount = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (board[i][j] == BLACK) {
+                    player1ChipCount++;
+                } else if (board[i][j] == WHITE) {
+                    player2ChipCount++;
+                }
+            }
+        }
+
+        if (player == BLACK) {
             return player1ChipCount;
-        return player2ChipCount;
+        } else {
+            return player2ChipCount;
+        }
     }
 
 }
