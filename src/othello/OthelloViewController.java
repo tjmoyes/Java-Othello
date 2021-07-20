@@ -471,10 +471,8 @@ public class OthelloViewController extends JFrame {
 
         // Chat output area fills out the remainder of the right side of the Frame
         JPanel chatOutputArea = new JPanel(new BorderLayout());
-        chatOutputArea.setPreferredSize(new Dimension(450, 0));
         chatOutputArea.setBackground(blueBG);
         chatOutputArea.setBorder(BorderFactory.createMatteBorder(5, 0, 5, 0, Color.GRAY));
-
         chatOutput = new JTextArea();
         chatOutput.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         chatOutput.setText("Player 1 initialized with " + c.getPlayerChipCount(1)
@@ -482,7 +480,11 @@ public class OthelloViewController extends JFrame {
         chatOutput.setOpaque(false);
         chatOutput.setWrapStyleWord(true);
         chatOutput.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(chatOutput, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setPreferredSize(new Dimension(450, 0));
         chatOutputArea.add(chatOutput, BorderLayout.CENTER);
+        scrollPane.add(chatOutputArea);
 
         commands.add(northSection, BorderLayout.NORTH);
         commands.add(chatOutputArea, BorderLayout.CENTER);
@@ -639,6 +641,11 @@ public class OthelloViewController extends JFrame {
             }
         }
 
+        /**
+         * Moves the green border to indicate which position is being selected.
+         * 
+         * @param direction which direction the green border indicator is being moved
+         */
         private void moveSelector(String direction) {
             squares[selectedRow][selectedColumn].setBorder(null);
             switch (direction) {
