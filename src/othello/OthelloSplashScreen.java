@@ -53,9 +53,8 @@ public class OthelloSplashScreen extends JWindow {
         int y = (screen.height - height) / 2;
         setBounds(x, y, width, height);
 
-        // TODO: Fix icon path before submission
         // Get the splash screen
-        JLabel label = new JLabel(new ImageIcon(getClass().getResource("graphics/splashscreen.png")));
+        JLabel label = new JLabel(new ImageIcon(getClass().getResource("/graphics/splashscreen.png")));
         // add splash screen to the Panel
         content.add(label, BorderLayout.CENTER);
 
