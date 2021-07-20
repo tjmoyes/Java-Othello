@@ -471,20 +471,19 @@ public class OthelloViewController extends JFrame {
 
         // Chat output area fills out the remainder of the right side of the Frame
         JPanel chatOutputArea = new JPanel(new BorderLayout());
-        chatOutputArea.setBackground(blueBG);
         chatOutputArea.setBorder(BorderFactory.createMatteBorder(5, 0, 5, 0, Color.GRAY));
         chatOutput = new JTextArea();
         chatOutput.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         chatOutput.setText("Player 1 initialized with " + c.getPlayerChipCount(1)
                 + " piece(s)\nPlayer 2 initialized with " + c.getPlayerChipCount(2) + " piece(s)");
-        chatOutput.setOpaque(false);
         chatOutput.setWrapStyleWord(true);
         chatOutput.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(chatOutput, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        JScrollPane scrollPane = new JScrollPane(chatOutput);
+        scrollPane.getViewport().getView().setBackground(blueBG);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setPreferredSize(new Dimension(450, 0));
-        chatOutputArea.add(chatOutput, BorderLayout.CENTER);
-        scrollPane.add(chatOutputArea);
+        chatOutputArea.add(scrollPane, BorderLayout.CENTER);
 
         commands.add(northSection, BorderLayout.NORTH);
         commands.add(chatOutputArea, BorderLayout.CENTER);
