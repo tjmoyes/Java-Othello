@@ -14,6 +14,8 @@ package othello;
 
 import javax.swing.*;
 
+import javafx.geometry.Dimension2D;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -101,6 +103,8 @@ public class OthelloViewController extends JFrame {
     private final JMenu game = new JMenu("Game");
     /** Help Menu */
     private final JMenu help = new JMenu("Help");
+    /** Network Menu */
+    private final JMenu network = new JMenu("Network");
 
     // File Menu Items
     private JMenuItem newGame = new JMenuItem("New Game");
@@ -133,6 +137,10 @@ public class OthelloViewController extends JFrame {
     /** Debug Scenarios ButtonGroup */
     private ButtonGroup debugGroup = new ButtonGroup();
 
+    // Network menu items
+    private JMenuItem connect = new JMenuItem("Connect");
+    private JMenuItem disconnect = new JMenuItem("Disconnect");
+
     // Help Menu Item
     private JMenuItem about = new JMenuItem("About");
 
@@ -144,6 +152,8 @@ public class OthelloViewController extends JFrame {
 
     private int selectedRow = 3;
     private int selectedColumn = 3;
+
+    private OthelloNetworkModalViewController networkDialog;
 
     /****************************************************************************************
      * METHODS
@@ -183,6 +193,7 @@ public class OthelloViewController extends JFrame {
         pane.add(board, BorderLayout.WEST);
         pane.add(commands, BorderLayout.EAST);
         pane.add(chatInputPanel, BorderLayout.SOUTH);
+        networkDialog = new OthelloNetworkModalViewController(this);
     }
 
     /**
@@ -193,6 +204,7 @@ public class OthelloViewController extends JFrame {
     private void createMenu(Controller c) {
         menuBar.add(file);
         menuBar.add(game);
+        menuBar.add(network);
         menuBar.add(help);
 
         // Add the action listeners
@@ -210,6 +222,8 @@ public class OthelloViewController extends JFrame {
         emptyBoard.addActionListener(c);
         innerSquareTest.addActionListener(c);
         upArrowOrientationTest.addActionListener(c);
+        connect.addActionListener(c);
+        disconnect.addActionListener(c);
 
         // Set the action commands
         newGame.setActionCommand("New Game");
@@ -226,6 +240,8 @@ public class OthelloViewController extends JFrame {
         emptyBoard.setActionCommand("5");
         innerSquareTest.setActionCommand("6");
         upArrowOrientationTest.setActionCommand("7");
+        connect.setActionCommand("connect");
+        disconnect.setActionCommand("disconnect");
 
         // Add to the file menu
         file.add(newGame);
@@ -275,6 +291,10 @@ public class OthelloViewController extends JFrame {
 
         // Add the HELP menu item
         help.add(about);
+
+        // Add the network menu items
+        network.add(connect);
+        network.add(disconnect);
 
         // Set the JFrame's menu bar
         super.setJMenuBar(menuBar);
@@ -582,6 +602,13 @@ public class OthelloViewController extends JFrame {
             case "skip":
                 checkEndgame();
                 break;
+
+            case "conenct":
+                displayNetworkDialog();
+                break;
+
+            case "disconnect":
+                chatOutput.append("\nDisconnecting...");
             }
         }
 
@@ -839,6 +866,18 @@ public class OthelloViewController extends JFrame {
                 move.setText("move");
                 move.setActionCommand("move");
             }
+        }
+
+        private void displayNetworkDialog() {
+            Point thisLocation = getLocation();
+            Dimension parentSize = getSize();
+            Dimension dialogSize = networkDialog.getSize();
+
+            int offsetX = (parentSize.width - dialogSize.width) / 2 + thisLocation.x;
+            int offsetY = (parentSize.height - dialogSize.height) / 2 + thisLocation.y;
+
+            networkDialog.setLocation(offsetX, offsetY);
+            networkDialog.setVisible(true);
         }
     }
 }
