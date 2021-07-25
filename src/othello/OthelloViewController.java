@@ -14,8 +14,6 @@ package othello;
 
 import javax.swing.*;
 
-import javafx.geometry.Dimension2D;
-
 import java.awt.*;
 import java.awt.event.*;
 
@@ -138,7 +136,7 @@ public class OthelloViewController extends JFrame {
     private ButtonGroup debugGroup = new ButtonGroup();
 
     // Network menu items
-    private JMenuItem connect = new JMenuItem("Connect");
+    private JMenuItem connect = new JMenuItem("New Connection");
     private JMenuItem disconnect = new JMenuItem("Disconnect");
 
     // Help Menu Item
@@ -603,12 +601,13 @@ public class OthelloViewController extends JFrame {
                 checkEndgame();
                 break;
 
-            case "conenct":
+            case "connect":
                 displayNetworkDialog();
                 break;
 
             case "disconnect":
                 chatOutput.append("\nDisconnecting...");
+                break;
             }
         }
 
@@ -878,6 +877,12 @@ public class OthelloViewController extends JFrame {
 
             networkDialog.setLocation(offsetX, offsetY);
             networkDialog.setVisible(true);
+
+            if (networkDialog.hasConnected)
+                chatOutput.append("\n\nConnecting to " + networkDialog.getAddress() + "\nOn Port "
+                        + networkDialog.getPort() + "\nWith name: " + networkDialog.getName());
+            else
+                chatOutput.append("\nCancel Pressed");
         }
     }
 }
