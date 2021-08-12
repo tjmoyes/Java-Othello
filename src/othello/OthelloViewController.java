@@ -568,6 +568,10 @@ public class OthelloViewController extends JFrame {
                 showAbout();
                 break;
 
+            case "Exit":
+                System.exit(0);
+                break;
+
             case "Show Valid Moves":
                 validMovesEnabled = showValidMoves.isSelected();
                 System.out.println(validMovesEnabled);
