@@ -45,7 +45,11 @@ public class OthelloNetworkModalViewController extends JDialog {
     // NOTE: In the case of this and other UI elements, you may rename them as you
     // see fit.
     // Just be careful that you catch every instance of it if you do.
-    JComboBox portInput;
+    // I was getting the following warning about unparameterized JComboBoxes:
+    // "JComboBox is a raw type. References to generic type JComboBox<E> should be
+    // parameterized"
+    // I fixed by adding the <String> parameter
+    JComboBox<String> portInput;
 
     /** Textfield for entering the FQDN/IP address */
     JTextField addressInput;
@@ -123,7 +127,7 @@ public class OthelloNetworkModalViewController extends JDialog {
         pane.add(portLabel, c);
 
         String portOptions[] = { "", "32300", "42300", "52300" };
-        portInput = new JComboBox<>(portOptions);
+        portInput = new JComboBox<String>(portOptions);
         portLabel.setLabelFor(portInput);
         portInput.setSelectedIndex(0);
         portInput.setEditable(true);
