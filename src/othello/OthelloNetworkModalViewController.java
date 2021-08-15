@@ -2,7 +2,6 @@ package othello;
 
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.GridBagConstraints;
@@ -11,11 +10,11 @@ import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import com.sun.glass.events.KeyEvent;
 
@@ -81,67 +80,93 @@ public class OthelloNetworkModalViewController extends JDialog {
         JPanel pane = new JPanel(new GridBagLayout());
         pane.setBorder(BorderFactory.createLineBorder(Color.GRAY, 5));
 
+        // Create GridBagConstraints and set the internal padding
         GridBagConstraints c = new GridBagConstraints();
+        c.ipadx = 5;
+        c.ipady = 5;
 
-        JLabel addressLabel = new JLabel("Address:");
+        JLabel addressLabel = new JLabel("Address: ");
+        addressLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         addressLabel.setDisplayedMnemonic(KeyEvent.VK_A);
+        c.anchor = GridBagConstraints.LINE_END;
+        c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 0;
-        c.weightx = GridBagConstraints.REMAINDER;
+        c.insets = new Insets(10, 5, 0, 0);
         pane.add(addressLabel, c);
 
         addressInput = new JTextField(20);
         addressLabel.setLabelFor(addressInput);
+        c.anchor = GridBagConstraints.LINE_START;
+        c.gridwidth = 3;
         c.gridx = 1;
-        c.weightx = 1;
         c.gridy = 0;
+        c.insets = new Insets(10, 0, 0, 5);
         pane.add(addressInput, c);
 
         addressError = new JLabel("Address Error Message");
         addressError.setForeground(Color.RED);
         c.gridx = 1;
         c.gridy = 1;
+        c.weightx = 1;
+        c.insets = new Insets(0, 0, 5, 0);
         pane.add(addressError, c);
 
-        JLabel portLabel = new JLabel("Port:");
+        JLabel portLabel = new JLabel("Port: ");
         portLabel.setDisplayedMnemonic(KeyEvent.VK_P);
+        portLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        c.anchor = GridBagConstraints.LINE_END;
+        c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 2;
+        c.insets = new Insets(5, 5, 0, 0);
         pane.add(portLabel, c);
 
         String portOptions[] = { "", "32300", "42300", "52300" };
         portInput = new JComboBox<>(portOptions);
         portLabel.setLabelFor(portInput);
         portInput.setSelectedIndex(0);
-        c.fill = GridBagConstraints.HORIZONTAL;
+        portInput.setEditable(true);
+        c.anchor = GridBagConstraints.LINE_START;
+        c.gridwidth = 2;
         c.gridx = 1;
         c.gridy = 2;
+        c.insets = new Insets(5, 0, 0, 5);
         pane.add(portInput, c);
 
         portError = new JLabel("Port error message");
         portError.setForeground(Color.RED);
+        c.gridwidth = 3;
         c.gridx = 1;
         c.gridy = 3;
+        c.insets = new Insets(0, 0, 5, 0);
         pane.add(portError, c);
 
         JLabel nameLabel = new JLabel("Name:");
         nameLabel.setDisplayedMnemonic(KeyEvent.VK_N);
-        nameLabel.setAlignmentX(RIGHT_ALIGNMENT);
+        nameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        c.anchor = GridBagConstraints.LINE_END;
+        c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 4;
+        c.insets = new Insets(5, 5, 0, 0);
         pane.add(nameLabel, c);
 
         nameInput = new JTextField(20);
         nameLabel.setLabelFor(nameInput);
+        c.anchor = GridBagConstraints.LINE_START;
+        c.gridwidth = 3;
         c.gridx = 1;
-        c.weightx = 1;
         c.gridy = 4;
+        c.insets = new Insets(5, 0, 0, 5);
         pane.add(nameInput, c);
 
         nameError = new JLabel("Name error message");
         nameError.setForeground(Color.RED);
+        c.gridwidth = 1;
         c.gridx = 1;
         c.gridy = 5;
+        c.insets = new Insets(0, 0, 5, 0);
         pane.add(nameError, c);
 
         JButton connectButton = new JButton("Connect");
@@ -151,11 +176,13 @@ public class OthelloNetworkModalViewController extends JDialog {
         cancelButton.setActionCommand("X");
         cancelButton.addActionListener(handler);
 
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridwidth = 1;
         c.gridx = 1;
         c.gridy = 6;
         pane.add(connectButton, c);
 
-        c.gridx = 2;
+        c.gridx = 3;
         c.gridy = 6;
         pane.add(cancelButton, c);
 
