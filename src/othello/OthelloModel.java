@@ -183,7 +183,11 @@ public class OthelloModel {
                 };
                 break;
             default:
-                System.err.println("BAD MODE. This should NEVER happen");
+                /*
+                PATCH NOTE - AUG 15 2021: I can't find the default case you specified in your feedback in the assignment doc,
+                but my assumption is that if the case doesn't match, set the mode to normal
+                */
+                mode = NORMAL;
                 break;
             }
         // @formatter:on
