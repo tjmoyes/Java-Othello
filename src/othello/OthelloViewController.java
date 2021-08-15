@@ -152,6 +152,7 @@ public class OthelloViewController extends JFrame {
     private int selectedColumn = 3;
 
     private OthelloNetworkModalViewController networkDialog;
+    private OthelloNetworkController onc;
 
     /****************************************************************************************
      * METHODS
@@ -882,10 +883,11 @@ public class OthelloViewController extends JFrame {
             networkDialog.setLocation(offsetX, offsetY);
             networkDialog.setVisible(true);
 
-            if (networkDialog.hasConnected)
-                chatOutput.append("\n\nConnecting to " + networkDialog.getAddress() + "\nOn Port "
-                        + networkDialog.getPort() + "\nWith name: " + networkDialog.getName());
-            else
+            if (networkDialog.hasConnected) {
+                chatOutput.append("\n\nNegotiating connection to " + networkDialog.getAddress() + " on port "
+                        + networkDialog.getPort());
+                onc = new OthelloNetworkController(networkDialog.getAddress(), networkDialog.getPort());
+            } else
                 chatOutput.append("\nCancel Pressed");
         }
     }

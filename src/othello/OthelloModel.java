@@ -453,7 +453,6 @@ public class OthelloModel {
      */
     public int tryMove(int row, int col, int player) {
         int tempRow = row, tempCol = col, capturedPieces = 0, jumpedSpaces = 0;
-        ;
 
         // NORTH
         try {
