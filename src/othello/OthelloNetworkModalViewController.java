@@ -89,14 +89,14 @@ public class OthelloNetworkModalViewController extends JDialog {
         c.ipadx = 5;
         c.ipady = 5;
 
-        JLabel addressLabel = new JLabel("Address: ");
+        JLabel addressLabel = new JLabel("Address:");
         addressLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         addressLabel.setDisplayedMnemonic(KeyEvent.VK_A);
         c.anchor = GridBagConstraints.LINE_END;
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 0;
-        c.insets = new Insets(10, 5, 0, 0);
+        c.insets = new Insets(10, 5, 0, 5);
         pane.add(addressLabel, c);
 
         addressInput = new JTextField(20);
@@ -108,7 +108,7 @@ public class OthelloNetworkModalViewController extends JDialog {
         c.insets = new Insets(10, 0, 0, 5);
         pane.add(addressInput, c);
 
-        addressError = new JLabel("Address Error Message");
+        addressError = new JLabel();
         addressError.setForeground(Color.RED);
         c.gridx = 1;
         c.gridy = 1;
@@ -116,14 +116,14 @@ public class OthelloNetworkModalViewController extends JDialog {
         c.insets = new Insets(0, 0, 5, 0);
         pane.add(addressError, c);
 
-        JLabel portLabel = new JLabel("Port: ");
+        JLabel portLabel = new JLabel("Port:");
         portLabel.setDisplayedMnemonic(KeyEvent.VK_P);
         portLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         c.anchor = GridBagConstraints.LINE_END;
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 2;
-        c.insets = new Insets(5, 5, 0, 0);
+        c.insets = new Insets(5, 5, 0, 5);
         pane.add(portLabel, c);
 
         String portOptions[] = { "", "32300", "42300", "52300" };
@@ -138,7 +138,7 @@ public class OthelloNetworkModalViewController extends JDialog {
         c.insets = new Insets(5, 0, 0, 5);
         pane.add(portInput, c);
 
-        portError = new JLabel("Port error message");
+        portError = new JLabel();
         portError.setForeground(Color.RED);
         c.gridwidth = 3;
         c.gridx = 1;
@@ -153,7 +153,7 @@ public class OthelloNetworkModalViewController extends JDialog {
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 4;
-        c.insets = new Insets(5, 5, 0, 0);
+        c.insets = new Insets(5, 5, 0, 5);
         pane.add(nameLabel, c);
 
         nameInput = new JTextField(20);
@@ -165,7 +165,7 @@ public class OthelloNetworkModalViewController extends JDialog {
         c.insets = new Insets(5, 0, 0, 5);
         pane.add(nameInput, c);
 
-        nameError = new JLabel("Name error message");
+        nameError = new JLabel();
         nameError.setForeground(Color.RED);
         c.gridwidth = 1;
         c.gridx = 1;
