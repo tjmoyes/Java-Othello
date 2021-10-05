@@ -1,3 +1,5 @@
+This is a project for a school assignment, CST8221 - Java Applications Programming, where we were assigned to create a version of Othello using Swing, Java's built-in GUI library.
+
 PATCH NOTES - July 8th 2021:
 - Corrected button color from default grey (so 90s) to white per feedback
 
